@@ -16,9 +16,9 @@ namespace OperacionTools.Interfaz
     /// <summary>
     /// Lógica de interacción para AutoDigitadorModSop.xaml
     /// </summary>
-    public partial class AutoDigitadorModSop : UserControl
+    public partial class AutoDigitadorModSopView : UserControl
     {
-        public AutoDigitadorModSop()
+        public AutoDigitadorModSopView()
         {
             InitializeComponent();
         }
