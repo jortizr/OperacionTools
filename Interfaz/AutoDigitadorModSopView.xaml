@@ -6,8 +6,48 @@
              xmlns:local="clr-namespace:OperacionTools.Interfaz"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Label x:Name="label" Content="VISTA DE DIGITADOR MODULO SOPORTE" Margin="128,149,128,76" Foreground="White"/>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+            <Button Content="📋 Pegar Portapapeles" Click="BtnPegar_Click" Padding="15,8" Background="#34495e" Foreground="White" BorderThickness="0"/>
+            <Button Content="🗑️ Limpiar" Click="BtnLimpiar_Click" Margin="10,0,0,0" Padding="15,8" Background="#c0392b" Foreground="White" BorderThickness="0"/>
+        </StackPanel>
+
+        <DataGrid x:Name="GridGuias" Grid.Row="1" AutoGenerateColumns="False" 
+                  Background="#2d2d30" Foreground="#FF3E3636" CanUserAddRows="False"
+                  RowBackground="#1e1e1e" AlternatingRowBackground="#252526" 
+                  BorderThickness="1" BorderBrush="#3f3f46" GridLinesVisibility="None" FontWeight="Bold">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Reg" Binding="{Binding P1}" Width="80" Foreground="#FF292424" HeaderStringFormat="Reg"/>
+                <DataGridTextColumn Header="Serv" Binding="{Binding P2}" Width="80" Foreground="#FF292424" HeaderStringFormat="Serv"/>
+                <DataGridTextColumn Header="Consecutivo" Binding="{Binding P3}" Width="*" CanUserSort="True" Foreground="#FF292424" HeaderStringFormat="Consecutivo"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="2" Background="#1a1a1c" Margin="0,15,0,0" Padding="15" CornerRadius="10">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel VerticalAlignment="Center" Margin="0,0,30,0">
+                    <TextBlock Text="Velocidad de digitación (ms):" Foreground="White" Margin="0,0,0,5"/>
+                    <Slider x:Name="SldDelay" Minimum="100" Maximum="2000" Value="500" Width="200" 
+                            TickFrequency="100" IsSnapToTickEnabled="True"/>
+                    <TextBlock Text="{Binding ElementName=SldDelay, Path=Value, StringFormat={}{0} ms}" 
+                               Foreground="#3498db" FontWeight="Bold" HorizontalAlignment="Right"/>
+                </StackPanel>
+
+                <Button x:Name="BtnIniciar" Content="▶ INICIAR DIGITACIÓN" Click="BtnIniciar_Click" 
+                        Background="#27ae60" Foreground="White" Padding="30,10" FontWeight="Bold">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
