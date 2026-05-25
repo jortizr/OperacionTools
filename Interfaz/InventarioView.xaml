@@ -75,12 +75,12 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Guía Concatenada" Binding="{Binding GuiaCompleta}" Width="150" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Guía Concatenada" Binding="{Binding GuiaCompleta}" Width="120" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Reg" Binding="{Binding Reg}" Width="60" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Serv" Binding="{Binding Serv}" Width="60" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Consecutivo" Binding="{Binding Consecutivo}" Width="120" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Unidades Esperadas" Binding="{Binding UnidadesEsperadas}" Width="130" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Unidades Leídas" Binding="{Binding UnidadesLeidas}" Width="110" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Consecutivo" Binding="{Binding Consecutivo}" Width="110" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Unidades" Binding="{Binding UnidadesEsperadas}" Width="90" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Unidades Leídas" Binding="{Binding UnidadesLeidas}" Width="90" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Estado" Binding="{Binding EstadoConciliacion}" Width="*" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
