@@ -6,7 +6,45 @@
              xmlns:local="clr-namespace:OperacionTools.Interfaz"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15"/>
+
+        <DataGrid x:Name="GridGuiasCodBar" Grid.Row="1" AutoGenerateColumns="False" 
+                  Background="#2d2d30" Foreground="#FF2B2828" CanUserAddRows="False"
+                  RowBackground="#FFBFBFBF" AlternatingRowBackground="#FF9E9E9E" 
+                  BorderThickness="1" BorderBrush="#3f3f46" GridLinesVisibility="None" FontWeight="Bold">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Reg" Binding="{Binding P1}" Width="80" Foreground="#FF292424" HeaderStringFormat="Reg"/>
+                <DataGridTextColumn Header="Serv" Binding="{Binding P2}" Width="80" Foreground="#FF292424" HeaderStringFormat="Serv"/>
+                <DataGridTextColumn Header="Consecutivo" Binding="{Binding P3}" Width="*" CanUserSort="True" Foreground="#FF292424" HeaderStringFormat="Consecutivo"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="2" Background="#1a1a1c" Margin="0,15,0,0" Padding="15" CornerRadius="10">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="📋 Pegar Portapapeles" Click="BtnPegar_Click" Padding="15,8" Background="#34495e" Foreground="White" BorderThickness="0"/>
+                <Button Content="🗑️ Limpiar" Click="BtnLimpiar_Click" Margin="10,0,0,0" Padding="15,8" Background="#c0392b" Foreground="White" BorderThickness="0"/>
+
+                <Button x:Name="BtnGenerarCode" Content="▶ Generar Cod. Barras" Click="BtnGenerarCodBar_Click" 
+                        Background="#27ae60" Foreground="White" Padding="30,10" Margin="10,0,0,0" FontWeight="Bold">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+        </Border>
+        <Label Content="Generador de Codigos de Barras" HorizontalAlignment="Center" Foreground="white" VerticalAlignment="Center" Height="26" Width="234" FontWeight="Bold" FontSize="14"/>
     </Grid>
 </UserControl>
