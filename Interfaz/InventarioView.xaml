@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="OperacionTools.Interfaz.InventarioView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OperacionTools.Interfaz"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Módulo de Control de Inventario General" Foreground="white"
+                   FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+
+        <Border Grid.Row="1" Background="#1a1a1c" Padding="15" CornerRadius="10" Margin="0,0,0,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Margin="5,0" >
+                    <TextBlock Text="Reg" Foreground="Gray" Margin="0,0,0,5"/>
+                    <TextBox x:Name="TxtReg" Height="30" FontSize="14" VerticalContentAlignment="Center"
+                             KeyDown="TxtReg_KeyDown" MaxLength="5"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Margin="5,0">
+                    <TextBlock Text="Serv (Servicio)" Foreground="Gray" Margin="0,0,0,5"/>
+                    <TextBox x:Name="TxtServ" Height="30" FontSize="14" VerticalContentAlignment="Center" 
+                             KeyDown="TxtServ_KeyDown" MaxLength="5"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Margin="5,0">
+                    <TextBlock Text="Consecutivo" Foreground="Gray" Margin="0,0,0,5"/>
+                    <TextBox x:Name="TxtConsecutivo" Height="30" FontSize="14" VerticalContentAlignment="Center" 
+                             KeyDown="TxtConsecutivo_KeyDown"/>
+                </StackPanel>
+
+                <Button Grid.Column="3" Content="📂 Cargar Inventario General (excel-Sigma)" Width="260" Height="30" 
+                        VerticalAlignment="Bottom" Margin="10,0,5,0" Background="#2980b9" 
+                        Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnCargarExcel_Click"/>
+            </Grid>
+        </Border>
+
+        <DataGrid x:Name="GridInventario" Grid.Row="2" AutoGenerateColumns="False" 
+                  Background="#2d2d30" Foreground="Black" CanUserAddRows="False"
+                  RowBackground="White" GridLinesVisibility="Horizontal" AlternatingRowBackground="#f2f2f2"
+                  BorderThickness="1" BorderBrush="#3f3f46" FontWeight="SemiBold">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding EstadoConciliacion}" Value="Conciliado Total">
+                            <Setter Property="Background" Value="#d4edda"/>
+                            <Setter Property="Foreground" Value="#155724"/>
+                        </DataTrigger>
+                            <DataTrigger Binding="{Binding EstadoConciliacion}" Value="Faltan Unidades">
+                                <Setter Property="Background" Value="#fff3cd"/>
+                                <Setter Property="Foreground" Value="#856404"/>
+                            </DataTrigger>
+                                <DataTrigger Binding="{Binding EstadoConciliacion}" Value="No Registrado / Faltante">
+                                    <Setter Property="Background" Value="#f8d7da"/>
+                                    <Setter Property="Foreground" Value="#721c24"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Guía Concatenada" Binding="{Binding GuiaCompleta}" Width="150" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Reg" Binding="{Binding Reg}" Width="60" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Serv" Binding="{Binding Serv}" Width="60" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Consecutivo" Binding="{Binding Consecutivo}" Width="120" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Unidades Esperadas" Binding="{Binding UnidadesEsperadas}" Width="130" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Unidades Leídas" Binding="{Binding UnidadesLeidas}" Width="110" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Estado" Binding="{Binding EstadoConciliacion}" Width="*" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <Border Grid.Row="3" Background="#1a1a1c" Padding="15" CornerRadius="10" Margin="0,15,0,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock x:Name="LblStatus" Text="Esperando lecturas o archivo de validación..." Foreground="LightGreen" VerticalAlignment="Center" FontWeight="Bold"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="🔄 Conciliar Datos" Padding="20,10" Background="#f39c12" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,0,10,0" Click="BtnConciliar_Click"/>
+                    <Button Content="📄 Guardar e Imprimir PDF" Padding="20,10" Background="#27ae60" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnExportarPDF_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+
+</UserControl>
