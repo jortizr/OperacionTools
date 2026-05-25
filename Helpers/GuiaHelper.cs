@@ -42,7 +42,10 @@ namespace OperacionTools.Helpers
                 if (soloNumeros.Length < 3) return null;
 
                 // Tomamos los primeros 2 como P1, el 3ero como P2 y el resto como P3
-                r1 = soloNumeros.Substring(0, 2).PadLeft(2, '0');
+                if (soloNumeros.Length == 11)  soloNumeros = soloNumeros.PadLeft(12, '0');
+
+
+                r1 = soloNumeros.Substring(0, 2).PadLeft(1, '0');
                 r2 = soloNumeros.Substring(2, 1);
                 r3 = soloNumeros.Substring(3).PadLeft(9, '0');
             }
