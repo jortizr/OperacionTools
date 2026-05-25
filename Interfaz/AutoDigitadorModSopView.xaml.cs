@@ -18,7 +18,7 @@ namespace OperacionTools.Interfaz
     /// <summary>
     /// Lógica de interacción para AutoDigitadorModSop.xaml
     /// </summary>
-    public partial class AutoDigitadorModSopView : System.Windows.Controls.UserControl
+    public partial class AutoDigitadorModSopView : UserControl
     {
         public class GuiaData
         {
@@ -35,21 +35,26 @@ namespace OperacionTools.Interfaz
 
         private void BtnPegar_Click(object sender, RoutedEventArgs e)
         {
-            string texto = System.Windows.Clipboard.GetText();
-            if (string.IsNullOrEmpty(texto)) return;
 
-            var lineas = texto.Split(new[] { Environment.NewLine, "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
-            var listaProcesada = new List<GuiaData>();
+            var lineas = ClipboardHelper.ObtenerLineasDesdePortapapeles();
+            if (!lineas.Any()) return;
 
-            foreach (var l in lineas)
+            //recuperacion de la lista existente para agregar los nuevos item, si esta vacia se crea una nueva
+            var listaProcesada = GridGuias.ItemsSource as List<GuiaData> ?? new List<GuiaData>();
+
+            foreach (var linea in lineas)
             {
-                var res = GuiaHelper.ProcesarLinea(l);
+                var res = GuiaHelper.ProcesarLinea(linea);
                 if (res.HasValue)
                 {
-                    listaProcesada.Add(new GuiaData { P1 = res.Value.reg, P2 = res.Value.ser, P3 = res.Value.cons });
+                    listaProcesada.Add(new GuiaData { 
+                        P1 = res.Value.reg, 
+                        P2 = res.Value.ser, 
+                        P3 = res.Value.cons 
+                    });
                 }
             }
-
+            GridGuias.ItemsSource = null;
             GridGuias.ItemsSource = listaProcesada;
         }
 
@@ -67,40 +72,34 @@ namespace OperacionTools.Interfaz
 
             // Pequeña notificación visual en lugar de MessageBox para no perder el foco
             BtnIniciar.Content = "PREPARANDO...";
-            await Task.Delay(3000);
+            await Task.Delay(4000);
             BtnIniciar.Content = "DIGITANDO...";
 
             foreach (var guia in items)
             {
                 // P1 + TAB
-                EnviarTexto(guia.P1);
+                await keyboardService.SimularTexto(guia.P1, delay);
                 await Task.Delay(delay);
-                System.Windows.Forms.SendKeys.SendWait("{TAB}");
+                keyboardService.PresionarTab();
                 await Task.Delay(delay);
 
                 // P2 + TAB
-                EnviarTexto(guia.P2);
+                await keyboardService.SimularTexto(guia.P2, delay);
                 await Task.Delay(delay);
-                System.Windows.Forms.SendKeys.SendWait("{TAB}");
+                keyboardService.PresionarTab();
                 await Task.Delay(delay);
 
                 // P3 + ENTER
-                EnviarTexto(guia.P3);
+                await keyboardService.SimularTexto(guia.P3, delay);
                 await Task.Delay(delay);
-                System.Windows.Forms.SendKeys.SendWait("{ENTER}");
+                keyboardService.PresionarEnter();
 
                 await Task.Delay(delay * 2);
             }
 
             BtnIniciar.Content = "▶ INICIAR DIGITACIÓN";
-            System.Windows.MessageBox.Show("Completado");
-        }
-
-        private void EnviarTexto(string texto)
-        {
-            // SendWait es la forma más compatible en .NET moderno para enviar 
-            // pulsaciones de teclas a procesos externos.
-            System.Windows.Forms.SendKeys.SendWait(texto);
+            // Opcional: Limpiar la lista después de procesar
+            GridGuias.ItemsSource = null;
         }
 
     }

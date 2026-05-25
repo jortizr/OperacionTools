@@ -19,8 +19,8 @@
         </StackPanel>
 
         <DataGrid x:Name="GridGuias" Grid.Row="1" AutoGenerateColumns="False" 
-                  Background="#2d2d30" Foreground="#FF3E3636" CanUserAddRows="False"
-                  RowBackground="#1e1e1e" AlternatingRowBackground="#252526" 
+                  Background="#2d2d30" Foreground="#FF2B2828" CanUserAddRows="False"
+                  RowBackground="#FFBFBFBF" AlternatingRowBackground="#FF9E9E9E" 
                   BorderThickness="1" BorderBrush="#3f3f46" GridLinesVisibility="None" FontWeight="Bold">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Reg" Binding="{Binding P1}" Width="80" Foreground="#FF292424" HeaderStringFormat="Reg"/>
