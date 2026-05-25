@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="OperacionTools.Interfaz.ConfiguracionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OperacionTools.Interfaz"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600" Background="#121212">
+    <Grid Margin="30">
+        <StackPanel MaxWidth="500" HorizontalAlignment="Left">
+            <TextBlock Text="⚙️ Configuración de Almacenamiento y Red" Foreground="White" FontSize="18" 
+                       FontWeight="Bold" Margin="0,0,0,20"/>
+            <CheckBox x:Name="ChkUtilizarRed" Content="Habilitar almacenamiento Local" Foreground="White"
+                      FontSize="13" Margin="0,0,0,20" IsChecked="True" Checked="ChkUtilizarRed_Changed"
+                      Unchecked="ChkUtilizarRed_Changed"/>
+
+            <StackPanel x:Name="PanelCredencialesRed">
+                <TextBlock Text="Ruta de Red (Carpeta Compartida UNC):" Foreground="Gray" FontWeight="DemiBold" Margin="0,0,5,5"/>
+                <TextBox x:Name="TxtRutaRed" Height="30" Margin="0,0,0,15" VerticalAlignment="Center" FontSize="13"
+                         Text="\\192.168.8.27\Compartido\InventarioData\"/>
+
+                <TextBlock Text="Usuario de Red:" Foreground="Gray" FontWeight="DemiBold" Margin="0,0,5,5"/>
+                <TextBox x:Name="TxtUsuarioRed" Height="30" Margin="0,0,0,15" VerticalContentAlignment="Center"
+                         FontSize="13"/>
+
+                <TextBlock Text="Contraseña de Red:" Foreground="Gray" Margin="0,0,5,5"/>
+                <PasswordBox x:Name="TxtPasswordRed" Height="30" Margin="0,0,0,25" 
+                             VerticalContentAlignment="Center"/>
+            </StackPanel>
+            <Button Content="💾 Guardar Configuración" Width="180" Height="35"
+                    Background="#27ae60" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnGuardar_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
