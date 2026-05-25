@@ -48,5 +48,10 @@ namespace OperacionTools
         {
             MainContentFrame.Content = new ConfiguracionView();
         }
+
+        private void BtnInventarioMalla_Click(object sender, RoutedEventArgs e)
+        {
+            MainContentFrame.Content = new InventarioView();
+        }
     }
 }
