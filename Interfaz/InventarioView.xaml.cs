@@ -50,7 +50,7 @@ namespace OperacionTools.Interfaz
             GridInventario.ItemsSource = _listaLecturasFisicas;
 
             //Recuperacion de backups ante fallas
-            string rutaBackup = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "inventario_backup.json");
+            string rutaBackup = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"Inventario_Backup_{DateTime.Now:yyyyMMdd}.json");
 
             if (File.Exists(rutaBackup))
             {
@@ -162,16 +162,17 @@ namespace OperacionTools.Interfaz
             GridInventario.ItemsSource = null;
             GridInventario.ItemsSource = _listaLecturasFisicas;
 
-            //Auto-guardado local inmediato para resguardo contra fallos de energía
+            //Auto-guardado local de respaldo
             try
             {
-                string rutaBackup = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"Inventario_Backup_{DateTime.Now:yyyyMMdd_HHmmss}.json");
-                string jsonText = JsonSerializer.Serialize(_listaLecturasFisicas);
+                string rutaBackup = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"Inventario_Backup_{DateTime.Now:yyyyMMdd}.json");
+                
+                string jsonText = JsonSerializer.Serialize(_listaLecturasFisicas, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(rutaBackup, jsonText);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error al guardar backup local: {ex.Message}");
+                MessageBox.Show($"Error al guardar backup local: {ex.Message}", "Error de Respaldo", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
             ActualizarGrilla();
@@ -293,7 +294,7 @@ namespace OperacionTools.Interfaz
                 else if (registro.UnidadesLeidas < registro.UnidadesEsperadas)
                     registro.EstadoConciliacion = "Faltan Unidades";          // Naranja/Amarillo
                 else
-                    registro.EstadoConciliacion = "Conciliado Total";         // Todo en Verde
+                    registro.EstadoConciliacion = "✅OK";         // Todo en Verde
 
                 consolidadoDefinitivo.Add(registro);
             }
@@ -494,7 +495,7 @@ namespace OperacionTools.Interfaz
                     if (string.IsNullOrEmpty(executablePath))
                     {
                         Dispatcher.Invoke(() => {
-                            LblStatus.Text = "⏳ No se detectó Chrome/Edge. Descargando motor de respaldo...";
+                            LblStatus.Text = "⏳ No se detectó Chrome. \n Descargando motor de respaldo...";
                             LblStatus.Foreground = System.Windows.Media.Brushes.Orange;
                         });
 
