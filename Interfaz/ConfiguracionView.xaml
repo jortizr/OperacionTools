@@ -11,7 +11,7 @@
             <TextBlock Text="⚙️ Configuración de Almacenamiento y Red" Foreground="White" FontSize="18" 
                        FontWeight="Bold" Margin="0,0,0,20"/>
             <CheckBox x:Name="ChkUtilizarRed" Content="Habilitar almacenamiento Local" Foreground="White"
-                      FontSize="13" Margin="0,0,0,20" IsChecked="True" Checked="ChkUtilizarRed_Changed"
+                      FontSize="13" Margin="0,0,0,20" IsChecked="False" Checked="ChkUtilizarRed_Changed"
                       Unchecked="ChkUtilizarRed_Changed"/>
 
             <StackPanel x:Name="PanelCredencialesRed">

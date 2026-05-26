@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OperacionTools"
         mc:Ignorable="d"
-        Title="Operaciones Tools" Height="450" Width="1050"
+        Title="Operaciones Tools" Height="500" Width="1050"
         Background="#121212" WindowStyle="None" AllowsTransparency="True">
     <Window.Resources>
         <Style x:Key="MenuButtonStyle" TargetType="Button">
