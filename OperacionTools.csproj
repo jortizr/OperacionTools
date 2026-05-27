@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\logo-envia.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="OperacionesTools.ico" />
   </ItemGroup>
 
@@ -21,6 +25,9 @@
 		</Resource>
 		<Resource Include="resources\c39hrp24.ttf">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Resources\logo-envia.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Resource>
     </ItemGroup>
 
