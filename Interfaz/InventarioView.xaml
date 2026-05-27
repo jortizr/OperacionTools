@@ -30,19 +30,19 @@
                 <StackPanel Grid.Column="0" Margin="5,0" >
                     <TextBlock Text="Reg" Foreground="Gray" Margin="0,0,0,5"/>
                     <TextBox x:Name="TxtReg" Height="30" FontSize="14" VerticalContentAlignment="Center"
-                             KeyDown="TxtReg_KeyDown" MaxLength="5"/>
+                             KeyDown="TxtReg_KeyDown" MaxLength="2" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Margin="5,0">
                     <TextBlock Text="Serv (Servicio)" Foreground="Gray" Margin="0,0,0,5"/>
                     <TextBox x:Name="TxtServ" Height="30" FontSize="14" VerticalContentAlignment="Center" 
-                             KeyDown="TxtServ_KeyDown" MaxLength="5"/>
+                             KeyDown="TxtServ_KeyDown" MaxLength="1"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" Margin="5,0">
                     <TextBlock Text="Consecutivo" Foreground="Gray" Margin="0,0,0,5"/>
                     <TextBox x:Name="TxtConsecutivo" Height="30" FontSize="14" VerticalContentAlignment="Center" 
-                             KeyDown="TxtConsecutivo_KeyDown"/>
+                             KeyDown="TxtConsecutivo_KeyDown" MinLines="4" MaxLength="9"/>
                 </StackPanel>
 
                 <Button Grid.Column="3" Content="📂 Cargar Inventario General (excel-Sigma)" Width="260" Height="30" 

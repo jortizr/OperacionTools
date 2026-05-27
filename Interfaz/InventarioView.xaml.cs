@@ -193,6 +193,20 @@ namespace OperacionTools.Interfaz
 
                     MessageBox.Show("El informe PDF de auditoría ha sido generado de forma exitosa y está listo.", "Reporte Creado", MessageBoxButton.OK, MessageBoxImage.Information);
 
+
+                    //abrir automáticamente el PDF generado con el programa predeterminado del sistema operativo
+                    try
+                    {
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(saveFileDialog.FileName)
+                        {
+                            UseShellExecute = true // Requerido en .NET Core / .NET 5+ para abrir archivos con el programa nativo de Windows
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"No se pudo abrir el PDF automáticamente: {ex.Message}");
+                    }
+
                     // Finalizado con éxito, limpiamos backups obsoletos de memoria física
                     _inventarioService.EliminarBackup();
                 }
