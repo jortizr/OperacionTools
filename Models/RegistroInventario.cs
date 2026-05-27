@@ -36,13 +36,22 @@ namespace OperacionTools.Models
         public int UnidadesEsperadas { get; set; } = 0;
 
         /// <summary>
-        /// Obtiene o establece la cantidad de unidades físicas escaneadas por el operario.
+        /// Obtiene o establece la cantidad de unidades físicas escaneadas por el colaborador.
         /// </summary>
         public int UnidadesLeidas { get; set; } = 0;
 
         /// <summary>
-        /// Obtiene o establece el dictamen final del cruce (ej. "✅OK", "Sobrante Físico", "Faltan Unidades").
+        /// Obtiene o establece el dictamen final del cruce (ej. "✅Conciliado Total", "Sobrante Físico", "Faltan Unidades").
         /// </summary>
         public string EstadoConciliacion { get; set; } = "Leído (Pendiente Validación)";
+
+
+        public string Novedad { get; set; } = string.Empty;
+        public string Saldo { get; set; } = string.Empty;
+        public string Remitente { get; set; } = string.Empty;
+        public string Estado { get; set; } = string.Empty;
+        public string Rack { get; set; } = string.Empty;
+        public string CodEntr { get; set; } = string.Empty;
+        public string Bodega { get; set; } = string.Empty;
     }
 }
