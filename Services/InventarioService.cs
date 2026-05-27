@@ -113,6 +113,8 @@ namespace OperacionTools.Services
 
                 foreach (DataRow row in tabla.Rows)
                 {
+                    if (row["cod_regional"] == DBNull.Value) continue;
+
                     // Saltar filas vacías o corruptas obligatorias
                     if (row["cod_regional"] == null || row["cod_regional"] == DBNull.Value ||
                         row["cons_guiasu"] == null || row["cons_guiasu"] == DBNull.Value)
@@ -124,6 +126,7 @@ namespace OperacionTools.Services
                     string reg = row["cod_regional"]?.ToString()?.Trim().PadLeft(2, '0') ?? "00";
                     string serv = row["cod_formapago"]?.ToString()?.Trim() ?? "";
                     string consecutivo = row["cons_guiasu"]?.ToString()?.Trim().PadLeft(9, '0') ?? "000000000";
+
 
                     int unidades = 1;
                     if (tabla.Columns.Contains("Unidades") && row["Unidades"] != DBNull.Value)
@@ -138,7 +141,15 @@ namespace OperacionTools.Services
                         Consecutivo = consecutivo,
                         UnidadesEsperadas = unidades,
                         UnidadesLeidas = 0,
-                        EstadoConciliacion = "No Registrado / Faltante"
+                        EstadoConciliacion = "No Registrado / Faltante",
+
+                        Novedad = row["Novedad"]?.ToString() ?? "",
+                        Saldo = row["Saldo"]?.ToString() ?? "0",
+                        Remitente = row["REMITENTE"]?.ToString() ?? "",
+                        Estado = row["ESTADO"]?.ToString() ?? "",
+                        Rack = row["RACK"]?.ToString() ?? "",
+                        CodEntr = row["CodEntr"]?.ToString() ?? "",
+                        Bodega = row["BODEGA"]?.ToString() ?? "Malla Documentos"
                     });
                 }
             }
@@ -165,7 +176,15 @@ namespace OperacionTools.Services
                     Serv = itemSis.Serv,
                     Consecutivo = itemSis.Consecutivo,
                     UnidadesEsperadas = itemSis.UnidadesEsperadas,
-                    UnidadesLeidas = leido?.UnidadesLeidas ?? 0
+                    UnidadesLeidas = leido?.UnidadesLeidas ?? 0,
+
+                    Novedad = itemSis.Novedad,
+                    Saldo = itemSis.Saldo,
+                    Remitente = itemSis.Remitente,
+                    Estado = itemSis.Estado,
+                    Rack = itemSis.Rack,
+                    CodEntr = itemSis.CodEntr,
+                    Bodega = itemSis.Bodega
                 };
 
                 if (registro.UnidadesLeidas == 0)
@@ -173,18 +192,28 @@ namespace OperacionTools.Services
                 else if (registro.UnidadesLeidas < registro.UnidadesEsperadas)
                     registro.EstadoConciliacion = "Faltan Unidades";
                 else
-                    registro.EstadoConciliacion = "✅Conciliado Total";
+                    registro.EstadoConciliacion = "✅ OK";
 
                 consolidadoDefinitivo.Add(registro);
             }
 
-            // 2. Identificar Sobrantes Físicos (Cajas escaneadas que el Excel no registra)
+            // 2. Identificar Sobrantes Físicos (Cajas escaneadas que NO estaban en el Excel)
             foreach (var itemFis in LecturasFisicas)
             {
                 if (!consolidadoDefinitivo.Any(x => x.Reg == itemFis.Reg && x.Serv == itemFis.Serv && x.Consecutivo == itemFis.Consecutivo))
                 {
-                    itemFis.EstadoConciliacion = "Sobrante Físico";
-                    consolidadoDefinitivo.Add(itemFis);
+                    var registroSobrante = new RegistroInventario
+                    {
+                        Reg = itemFis.Reg,
+                        Serv = itemFis.Serv,
+                        Consecutivo = itemFis.Consecutivo,
+                        UnidadesEsperadas = 0,
+                        UnidadesLeidas = itemFis.UnidadesLeidas,
+                        EstadoConciliacion = "Sobrante Físico",
+                        Novedad = "Sobrante - No reportado en Excel",
+                        Bodega = "Malla General" // Fallback por defecto
+                    };
+                    consolidadoDefinitivo.Add(registroSobrante);
                 }
             }
 
