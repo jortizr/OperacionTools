@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Text="Módulo de Control de Inventario General" Foreground="white"
@@ -84,8 +85,21 @@
                 <DataGridTextColumn Header="Estado" Binding="{Binding EstadoConciliacion}" Width="*" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
-        
-        <Border Grid.Row="3" Background="#1a1a1c" Padding="15" CornerRadius="10" Margin="0,15,0,0">
+        <StackPanel Grid.Row="3" Margin="0,15,0,0">
+            <TextBlock Text="Observaciones y Hallazgos de la Auditoría:" 
+               Foreground="White" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBox x:Name="TxtObservaciones" 
+             Height="50" 
+             Background="#1a1a1c" 
+             Foreground="White" 
+             BorderBrush="#333"
+             TextWrapping="Wrap" 
+             AcceptsReturn="True" 
+             VerticalScrollBarVisibility="Auto"
+             Padding="6"
+             />
+        </StackPanel>
+        <Border Grid.Row="4" Background="#1a1a1c" Padding="15" CornerRadius="10" Margin="0,15,0,0">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock x:Name="LblStatus" Text="Esperando lecturas o archivo de validación..." Foreground="LightGreen" VerticalAlignment="Center" FontWeight="Bold"/>

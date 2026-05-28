@@ -95,9 +95,9 @@ namespace OperacionTools.Interfaz
         {
             if ((e.Key == Key.Enter || e.Key == Key.Tab) && !string.IsNullOrWhiteSpace(TxtConsecutivo.Text))
             {
-                string reg = TxtReg.Text.Trim();
-                string serv = TxtServ.Text.Trim();
-                string consecutivo = TxtConsecutivo.Text.Trim();
+                string reg = TxtReg.Text.Trim().PadLeft(2, '0');
+                string serv = TxtServ.Text.Trim().PadLeft(1, '0');
+                string consecutivo = TxtConsecutivo.Text.Trim().PadLeft(9, '0');
 
                 // Envía la concatenación limpia de datos al motor lógico
                 if (_inventarioService.ProcesarLecturaFisica(reg + serv + consecutivo))
@@ -165,12 +165,15 @@ namespace OperacionTools.Interfaz
         /// </summary>
         private async void BtnExportarPDF_Click(object sender, RoutedEventArgs e)
         {
+
             var datosReporte = GridInventario.ItemsSource as List<RegistroInventario>;
             if (datosReporte == null || !datosReporte.Any())
             {
                 MessageBox.Show("No hay datos conciliados disponibles en la tabla para exportar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            
+            string observacionesUsuario = TxtObservaciones.Text.Trim();
 
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
@@ -186,7 +189,7 @@ namespace OperacionTools.Interfaz
                     LblStatus.Foreground = Brushes.Orange;
 
                     // Invocar el motor de renderizado asíncrono
-                    await _reportService.GenerarReporteAuditoriaAsync(datosReporte, saveFileDialog.FileName);
+                    await _reportService.GenerarReporteAuditoriaAsync(datosReporte, saveFileDialog.FileName, observacionesUsuario);
 
                     LblStatus.Text = "✅ PDF generado y exportado exitosamente.";
                     LblStatus.Foreground = Brushes.LightGreen;
