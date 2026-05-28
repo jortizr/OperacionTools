@@ -45,6 +45,10 @@ namespace OperacionTools.Models
         /// </summary>
         public string EstadoConciliacion { get; set; } = "Leído (Pendiente Validación)";
 
+        /// <summary>
+        /// Obtiene o establece la regional maestra de descarga del inventario (Columna 'Regional' del Excel).
+        /// </summary>
+        public string RegionalMaestro { get; set; } = string.Empty;
 
         public string Novedad { get; set; } = string.Empty;
         public string Saldo { get; set; } = string.Empty;
@@ -53,5 +57,6 @@ namespace OperacionTools.Models
         public string Rack { get; set; } = string.Empty;
         public string CodEntr { get; set; } = string.Empty;
         public string Bodega { get; set; } = string.Empty;
+
     }
 }
