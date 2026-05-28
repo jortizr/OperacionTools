@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OperacionTools"
         mc:Ignorable="d"
-        Title="Operaciones Tools" Height="500" Width="1050"
+        Title="Operaciones Tools" Height="550" Width="1050"
         Background="#121212" WindowStyle="None" AllowsTransparency="True">
     <Window.Resources>
         <Style x:Key="MenuButtonStyle" TargetType="Button">
@@ -50,16 +50,16 @@
                 <Button Content="Generar Cod. Barras" Style="{StaticResource MenuButtonStyle}" Click="BtnGenerarGuia_Click"/>
                 <Button x:Name="BtnDigitarModSoporte" Content="Digitar Mod. Soporte" Style="{StaticResource MenuButtonStyle}" Margin="0,10,0,0" Click="btnDigitarModSop_Click"/>
                 <Button x:Name="BtnInventario" Content="Inventario Malla" Style="{StaticResource MenuButtonStyle}" Margin="0,10,0,0" Click="BtnInventarioMalla_Click"/>
-                
-                
+
+
                 <Button Content="Configuración" Style="{StaticResource MenuButtonStyle}" Margin="0,10,0,0" Click="BtnConfiguracion_Click"/>
             </StackPanel>
-            
+
         </Border>
-        
+
         <Grid Grid.Column="1" Margin="20">
-            
-            <Border Background="#202022" CornerRadius="20" Padding="20">
+
+            <Border Background="#202022" CornerRadius="20" Padding="20" MouseLeftButtonDown="Border_MouseLeftButtonDown">
                 <ContentControl x:Name="MainContentFrame" />
             </Border>
         </Grid>
@@ -71,6 +71,7 @@
                     FontWeight="Bold"
                     Height="20" 
                     Cursor="Hand"/>
+        <Label Grid.Column="1" Content="Dev: J.O.R" HorizontalAlignment="Left" Height="22" Margin="0,528,0,0" VerticalAlignment="Top" Width="176" Foreground="#FF727272" FontSize="10"/>
 
     </Grid>
 
