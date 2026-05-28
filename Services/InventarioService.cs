@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using ExcelDataReader;
 using OperacionTools.Helpers;
 using OperacionTools.Models;
@@ -126,6 +127,8 @@ namespace OperacionTools.Services
                     string reg = row["cod_regional"]?.ToString()?.Trim().PadLeft(2, '0') ?? "00";
                     string serv = row["cod_formapago"]?.ToString()?.Trim() ?? "";
                     string consecutivo = row["cons_guiasu"]?.ToString()?.Trim().PadLeft(9, '0') ?? "000000000";
+                    string regionalMaestro = row["Regional"]?.ToString()?.Trim() ?? "No registrado";
+                    string unidadesGuia = row["Unidades"]?.ToString()?.Trim() ?? "";
 
 
                     int unidades = 1;
@@ -136,20 +139,21 @@ namespace OperacionTools.Services
 
                     SistemaExcel.Add(new RegistroInventario
                     {
+                        RegionalMaestro = regionalMaestro,
                         Reg = reg,
                         Serv = serv,
                         Consecutivo = consecutivo,
                         UnidadesEsperadas = unidades,
                         UnidadesLeidas = 0,
                         EstadoConciliacion = "No Registrado / Faltante",
-
                         Novedad = row["Novedad"]?.ToString() ?? "",
                         Saldo = row["Saldo"]?.ToString() ?? "0",
                         Remitente = row["REMITENTE"]?.ToString() ?? "",
                         Estado = row["ESTADO"]?.ToString() ?? "",
                         Rack = row["RACK"]?.ToString() ?? "",
-                        CodEntr = row["CodEntr"]?.ToString() ?? "",
-                        Bodega = row["BODEGA"]?.ToString() ?? "Malla Documentos"
+                        CodEntr = row["CodEntr"]?.ToString() ?? "Sin Responsable",
+                        Bodega = row["BODEGA"]?.ToString() ?? "no encontrada"
+                        
                     });
                 }
             }
@@ -177,7 +181,7 @@ namespace OperacionTools.Services
                     Consecutivo = itemSis.Consecutivo,
                     UnidadesEsperadas = itemSis.UnidadesEsperadas,
                     UnidadesLeidas = leido?.UnidadesLeidas ?? 0,
-
+                    RegionalMaestro = itemSis.RegionalMaestro,
                     Novedad = itemSis.Novedad,
                     Saldo = itemSis.Saldo,
                     Remitente = itemSis.Remitente,

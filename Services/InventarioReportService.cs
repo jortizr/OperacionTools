@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PuppeteerSharp;
 using OperacionTools.Models;
+using System.Windows;
 
 namespace OperacionTools.Services
 {
@@ -22,31 +23,47 @@ namespace OperacionTools.Services
         /// </summary>
         /// <param name="datos">Lista consolidada de registros de inventario.</param>
         /// <param name="rutaDestinoPdf">Ruta absoluta donde se escribirá el PDF físico.</param>
-        public async Task GenerarReporteAuditoriaAsync(List<RegistroInventario> datos, string rutaDestinoPdf)
+        public async Task GenerarReporteAuditoriaAsync(List<RegistroInventario> datos, string rutaDestinoPdf, string observaciones = "")
         {
             // 1. Resolver el nombre dinámico de la Regional y la Bodega
             var regionales = _regionalService.ObtenerRegionales();
-            string codRegRaw = datos.FirstOrDefault()?.Reg ?? "00";
+
+            string codRegRaw = datos.FirstOrDefault(x => !string.IsNullOrEmpty(x.RegionalMaestro))?.RegionalMaestro ?? "0";
+
+            // Limpiamos ceros iniciales para que coincida con las llaves del JSON ("1", "8", "11", etc.)
             string codRegKey = codRegRaw.TrimStart('0');
+            if (string.IsNullOrEmpty(codRegKey)) codRegKey = "0"; // Fallback de segurida
+
 
             string codRegTrimmed = codRegRaw.TrimStart('0');
             if (string.IsNullOrEmpty(codRegTrimmed)) codRegTrimmed = "1";
 
 
-            if (string.IsNullOrEmpty(codRegKey)) codRegKey = "1"; // Fallback de seguridad
+            if (string.IsNullOrEmpty(codRegKey)) codRegKey = "no encontrada"; // Fallback de seguridad
 
-            string nombreRegional = regionales.ContainsKey(codRegKey) ? regionales[codRegKey] : "Desconocida";
-            string nombreBodega = datos.FirstOrDefault()?.Bodega ?? "Malla Documentos";
+            string nombreRegional = regionales.ContainsKey(codRegKey) ? regionales[codRegKey] : $"Regional {codRegKey}";
+
+            string nombreBodega = datos.FirstOrDefault()?.Bodega ?? "Malla - Bodega no encontrada";
 
             // 2. Procesar el logo corporativo (logo-envia.png) en Base64 para evitar enlaces rotos
             string srcLogo = string.Empty;
-            string rutaLogo = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logo-envia.png");
+            string rutaLogo = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "logo-envia.png");
 
             if (File.Exists(rutaLogo))
             {
                 byte[] imageBytes = File.ReadAllBytes(rutaLogo);
                 string base64String = Convert.ToBase64String(imageBytes);
                 srcLogo = $"data:image/png;base64,{base64String}";
+            }
+            else
+            {
+                // Alerta de diagnóstico temporal por si el nombre del archivo tiene alguna diferencia
+                MessageBox.Show(
+                    $"No se encontró el logo en la ruta esperada:\n{rutaLogo}\n\nEl reporte se generará sin logo.",
+                    "⚠️ Advertencia de Recursos",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
             }
 
             // 3. Compilación de la Estructura HTML y Estilos CSS Oficiales de Envía
@@ -176,7 +193,7 @@ namespace OperacionTools.Services
             <body>
                 <div class='header-container'>
                     <div class='header-text'>
-                        <h1 class='title'>Inventario Malla Regional {nombreRegional}</h1>
+                        <h1 class='title'>Inventario Malla Regional - {nombreRegional}</h1>
                         <div class='subtitle'>Reporte de Control y Cuadrante de Mercancía</div>
                     </div>
                     <div class='logo-container'>");
@@ -204,15 +221,16 @@ namespace OperacionTools.Services
                         <tr>
                             <th style='width: 4%;'>Reg</th>
                             <th style='width: 4%;'>Serv</th>
-                            <th style='width: 12%;'>Nº Guía</th>
+                            <th style='width: 12%;'>Consecutivo</th>
                             <th style='width: 16%;'>Novedad</th>
-                            <th style='width: 6%; text-align: center;'>Saldo</th>
                             <th>Remitente</th>
                             <th style='width: 12%;'>Estado</th>
                             <th style='width: 8%;'>Rack</th>
-                            <th style='width: 6%;'>CodEntr</th>
+                            <th style='width: 6%;'>CodNom</th>
                             <th style='width: 6%; text-align: center;'>Leídas</th>
-                            <th style='width: 14%; text-align: center;'>Dictamen</th>
+                            <th style='width: 6%; text-align: center;'>Unidades</th>
+                            <th style='width: 6%; text-align: center;'>Saldo</th>
+                            <th style='width: 14%; text-align: center;'>Observacion</th>
                         </tr>
                     </thead>
                     <tbody>");
@@ -221,7 +239,7 @@ namespace OperacionTools.Services
             {
                 // Determinar el estilo visual de la fila según la conciliación
                 string cssClass = "status-error";
-                if (item.EstadoConciliacion.Contains("✅") || item.EstadoConciliacion.ToUpper().Contains("OK"))
+                if (item.EstadoConciliacion.Contains("✅OK") || item.EstadoConciliacion.ToUpper().Contains("OK"))
                 {
                     cssClass = "status-ok";
                 }
@@ -236,21 +254,49 @@ namespace OperacionTools.Services
                         <td>{item.Serv}</td>
                         <td><strong>{item.Consecutivo}</strong></td>
                         <td>{item.Novedad}</td>
-                        <td style='text-align: center;'>{item.Saldo}</td>
                         <td>{item.Remitente}</td>
                         <td>{item.Estado}</td>
                         <td>{item.Rack}</td>
                         <td>{item.CodEntr}</td>
                         <td style='text-align: center; font-weight: bold;'>{item.UnidadesLeidas}</td>
+                        <td style='text-align: center;'>{item.UnidadesEsperadas}</td>
+                        <td style='text-align: center;'>{item.Saldo}</td>
                         <td style='text-align: center;'><span class='badge {cssClass}'>{item.EstadoConciliacion}</span></td>
                     </tr>");
             }
 
             htmlBuilder.Append(@"
                     </tbody>
-                </table>
-            </body>
-            </html>");
+                </table>");
+
+            if (!string.IsNullOrWhiteSpace(observaciones))
+            {
+                htmlBuilder.Append($@"
+                <div style='margin-top: 35px; padding: 15px; border: 1px solid #e0e0e0; background-color: #fcfcfc; border-radius: 6px;'>
+                    <h3 style='margin-top: 0; color: #2c3e50; font-size: 16px; border-bottom: 2px solid #f39c12; padding-bottom: 5px;'>
+                        📝 Observaciones y Hallazgos de la Auditoría
+                    </h3>
+                    <p style='white-space: pre-wrap; font-size: 14px; color: #444; line-height: 1.5; margin: 8px 0 0 0;'>
+                        {observaciones}
+                    </p>
+                </div>");
+                    }
+                    else
+                    {
+                        // Fallback por si va vacío, para dejar constancia legal de que no hubo novedades extras
+                        htmlBuilder.Append(@"
+                <div style='margin-top: 35px; padding: 12px; border: 1px dashed #ccc; background-color: #fafafa; border-radius: 6px; text-align: center;'>
+                    <p style='font-size: 13px; color: #777; font-style: italic; margin: 0;'>
+                        No se registraron observaciones adicionales durante esta jornada de auditoría del inventario.
+                    </p>
+                </div>");
+                    }
+
+                    // Continuación normal del cierre del HTML
+                    htmlBuilder.Append(@"
+                        </body>
+                        </html>");
+
 
             // 4. Inicializar y lanzar el navegador Headless de Puppeteer Sharp
             var browserFetcher = new BrowserFetcher();
