@@ -63,13 +63,13 @@
                             <Setter Property="Background" Value="#d4edda"/>
                             <Setter Property="Foreground" Value="#155724"/>
                         </DataTrigger>
-                            <DataTrigger Binding="{Binding EstadoConciliacion}" Value="Faltan Unidades">
-                                <Setter Property="Background" Value="#fff3cd"/>
-                                <Setter Property="Foreground" Value="#856404"/>
-                            </DataTrigger>
-                                <DataTrigger Binding="{Binding EstadoConciliacion}" Value="No Registrado / Faltante">
-                                    <Setter Property="Background" Value="#f8d7da"/>
-                                    <Setter Property="Foreground" Value="#721c24"/>
+                        <DataTrigger Binding="{Binding EstadoConciliacion}" Value="Faltan Unidades">
+                            <Setter Property="Background" Value="#fff3cd"/>
+                            <Setter Property="Foreground" Value="#856404"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding EstadoConciliacion}" Value="No Registrado / Faltante">
+                            <Setter Property="Background" Value="#f8d7da"/>
+                            <Setter Property="Foreground" Value="#721c24"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -101,8 +101,9 @@
         </StackPanel>
         <Border Grid.Row="4" Background="#1a1a1c" Padding="15" CornerRadius="10" Margin="0,15,0,0">
             <Grid>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                     <TextBlock x:Name="LblStatus" Text="Esperando lecturas o archivo de validación..." Foreground="LightGreen" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <ProgressBar x:Name="ProgBarStatus" Height="2" Width="auto" Visibility="Collapsed" BorderBrush="#FF312F2F"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="🔄 Conciliar Datos" Padding="20,10" Background="#f39c12" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,0,10,0" Click="BtnConciliar_Click"/>
