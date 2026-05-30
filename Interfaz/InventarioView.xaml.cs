@@ -185,14 +185,32 @@ namespace OperacionTools.Interfaz
             {
                 try
                 {
-                    LblStatus.Text = "⏳ Generando reporte PDF corporativo mediante motor Headless...";
+                    LblStatus.Text = "⏳ Generando reporte PDF con Chrome, Espera por favor...";
                     LblStatus.Foreground = Brushes.Orange;
 
+
+                    // Definimos el reportero de progreso
+                    var progreso = new Progress<double>(porcentaje =>
+                    {
+                        LblStatus.Text = $"⏳ Descargando componentes necesarios: {porcentaje:F1}%";
+
+                        // Opcional: Si pones un <ProgressBar x:Name="MiProgressBar"/> en tu XAML puedes hacer:
+                        ProgBarStatus.Visibility = Visibility.Visible;
+                        ProgBarStatus.Value = porcentaje;
+                    });
+
                     // Invocar el motor de renderizado asíncrono
-                    await _reportService.GenerarReporteAuditoriaAsync(datosReporte, saveFileDialog.FileName, observacionesUsuario);
+                    await _reportService.GenerarReporteAuditoriaAsync(datosReporte, saveFileDialog.FileName, 
+                        observacionesUsuario, progreso, 
+                        (mensaje) =>{
+                        LblStatus.Text = mensaje;}
+                    );
 
                     LblStatus.Text = "✅ PDF generado y exportado exitosamente.";
                     LblStatus.Foreground = Brushes.LightGreen;
+
+                    ProgBarStatus.Value = 0;
+                    ProgBarStatus.Visibility = Visibility.Collapsed;
 
                     MessageBox.Show("El informe PDF de auditoría ha sido generado de forma exitosa y está listo.", "Reporte Creado", MessageBoxButton.OK, MessageBoxImage.Information);
 
