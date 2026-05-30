@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PuppeteerSharp;
+using System.Net.Http;
 using OperacionTools.Models;
 using System.Windows;
 
@@ -23,7 +24,8 @@ namespace OperacionTools.Services
         /// </summary>
         /// <param name="datos">Lista consolidada de registros de inventario.</param>
         /// <param name="rutaDestinoPdf">Ruta absoluta donde se escribirá el PDF físico.</param>
-        public async Task GenerarReporteAuditoriaAsync(List<RegistroInventario> datos, string rutaDestinoPdf, string observaciones = "")
+        public async Task GenerarReporteAuditoriaAsync(List<RegistroInventario> datos, string rutaDestinoPdf, string observaciones = "",
+            IProgress<double> progresoDescarga = null, Action<string> reportarEstado = null)
         {
             // 1. Resolver el nombre dinámico de la Regional y la Bodega
             var regionales = _regionalService.ObtenerRegionales();
@@ -32,8 +34,7 @@ namespace OperacionTools.Services
 
             // Limpiamos ceros iniciales para que coincida con las llaves del JSON ("1", "8", "11", etc.)
             string codRegKey = codRegRaw.TrimStart('0');
-            if (string.IsNullOrEmpty(codRegKey)) codRegKey = "0"; // Fallback de segurida
-
+            if (string.IsNullOrEmpty(codRegKey)) codRegKey = "0"; // Fallback
 
             string codRegTrimmed = codRegRaw.TrimStart('0');
             if (string.IsNullOrEmpty(codRegTrimmed)) codRegTrimmed = "1";
@@ -299,11 +300,50 @@ namespace OperacionTools.Services
 
 
             // 4. Inicializar y lanzar el navegador Headless de Puppeteer Sharp
-            var browserFetcher = new BrowserFetcher();
+            reportarEstado?.Invoke("⏳ Verificando componentes de renderizado... \n (Si es la primera vez, esto puede tardar unos minutos)");
+
+            // Configuramos las opciones para capturar el progreso de los Bytes
+            var opciones = new BrowserFetcherOptions
+            {
+                Browser = SupportedBrowser.Chrome,
+                CustomFileDownload = async (url, archivePath) =>
+                {
+                    using var client = new HttpClient();
+                    // Enviamos la petición leyendo los encabezados primero para saber el tamaño total del archivo
+                    using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+                    response.EnsureSuccessStatusCode();
+
+                    var totalBytes = response.Content.Headers.ContentLength;
+                    using var downloadStream = await response.Content.ReadAsStreamAsync();
+                    using var fileStream = File.Create(archivePath);
+
+                    var buffer = new byte[8192]; // Buffer de lectura de 8KB
+                    long totalBytesLeidos = 0;
+                    int bytesLeidos;
+
+                    while ((bytesLeidos = await downloadStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    {
+                        await fileStream.WriteAsync(buffer, 0, bytesLeidos);
+                        totalBytesLeidos += bytesLeidos;
+
+                        if (totalBytes.HasValue)
+                        {
+                            // Cálculo matemático del porcentaje de progreso
+                            double porcentaje = (double)totalBytesLeidos / totalBytes.Value * 100;
+                            progresoDescarga?.Report(porcentaje);
+                        }
+                    }
+                }
+            };
+
+            var browserFetcher = new BrowserFetcher(opciones);
             await browserFetcher.DownloadAsync();
 
             using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
             using var page = await browser.NewPageAsync();
+
+            reportarEstado?.Invoke("⏳ Generando y formateando el documento PDF...");
+        
 
             await page.SetContentAsync(htmlBuilder.ToString());
 
