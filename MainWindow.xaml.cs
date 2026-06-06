@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using OperacionTools.Interfaz;
+using OperacionTools.Services;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,7 +10,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using OperacionTools.Interfaz;
 
 namespace OperacionTools
 {
@@ -20,11 +21,22 @@ namespace OperacionTools
         public MainWindow()
         {
             InitializeComponent();
+
+            try
+            {
+                var regionalService = new RegionalService();
+            }
+            catch (Exception ex)
+            {
+                // Si por algún motivo extraño falla, este mensaje te dirá el porqué exacto en pantalla
+                MessageBox.Show($"Error al inicializar el archivo de Regionales: {ex.Message}",
+                                "Diagnóstico Inicial", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // Permite arrastrar la ventana sin bordes por toda la pantalla
+           // Permite arrastrar la ventana sin bordes por toda la pantalla
             this.DragMove();
         }
 
