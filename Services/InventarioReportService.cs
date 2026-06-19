@@ -27,6 +27,78 @@ namespace OperacionTools.Services
         public async Task GenerarReporteAuditoriaAsync(List<RegistroInventario> datos, string rutaDestinoPdf, string observaciones = "",
             string elaboradoPor="", IProgress<double> progresoDescarga = null, Action<string> reportarEstado = null)
         {
+            
+            string html = ObtenerHtmlReporte(datos, observaciones, elaboradoPor);
+
+            // 4. Inicializar y lanzar el navegador Headless de Puppeteer Sharp
+            reportarEstado?.Invoke("⏳ Verificando componentes de renderizado... \n (Si es la primera vez, esto puede tardar unos minutos)");
+
+            // Configuramos las opciones para capturar el progreso de los Bytes
+            var opciones = new BrowserFetcherOptions
+            {
+                Browser = SupportedBrowser.Chrome,
+                CustomFileDownload = async (url, archivePath) =>
+                {
+                    using var client = new HttpClient();
+                    // Enviamos la petición leyendo los encabezados primero para saber el tamaño total del archivo
+                    using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+                    response.EnsureSuccessStatusCode();
+
+                    var totalBytes = response.Content.Headers.ContentLength;
+                    using var downloadStream = await response.Content.ReadAsStreamAsync();
+                    using var fileStream = File.Create(archivePath);
+
+                    var buffer = new byte[8192]; // Buffer de lectura de 8KB
+                    long totalBytesLeidos = 0;
+                    int bytesLeidos;
+
+                    while ((bytesLeidos = await downloadStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    {
+                        await fileStream.WriteAsync(buffer, 0, bytesLeidos);
+                        totalBytesLeidos += bytesLeidos;
+
+                        if (totalBytes.HasValue)
+                        {
+                            // Cálculo matemático del porcentaje de progreso
+                            double porcentaje = (double)totalBytesLeidos / totalBytes.Value * 100;
+                            progresoDescarga?.Report(porcentaje);
+                        }
+                    }
+                }
+            };
+
+            var browserFetcher = new BrowserFetcher(opciones);
+            await browserFetcher.DownloadAsync();
+
+            using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
+            using var page = await browser.NewPageAsync();
+
+            reportarEstado?.Invoke("⏳ Generando y formateando el documento PDF...");
+        
+
+            await page.SetContentAsync(html);
+
+            await page.PdfAsync(rutaDestinoPdf, new PdfOptions
+            {
+                Format = PuppeteerSharp.Media.PaperFormat.Letter,
+                PrintBackground = true,
+                MarginOptions = new PuppeteerSharp.Media.MarginOptions
+                {
+                    Top = "15mm",
+                    Bottom = "15mm",
+                    Left = "15mm",
+                    Right = "15mm"
+                }
+            });
+        }
+
+
+        /// <summary>
+        /// Genera exclusivamente la cadena de texto HTML con la estructura corporativa de Envía.
+        /// </summary>
+        /// 
+        public string ObtenerHtmlReporte(List<RegistroInventario> datos, string observaciones = "", string elaboradoPor= "")
+        {
             // 1. Resolver el nombre dinámico de la Regional y la Bodega
             var regionales = _regionalService.ObtenerRegionales();
 
@@ -283,84 +355,24 @@ namespace OperacionTools.Services
                         {observaciones}
                     </p>
                 </div>");
-                    }
-                    else
-                    {
-                        // Fallback por si va vacío, para dejar constancia legal de que no hubo novedades extras
-                        htmlBuilder.Append(@"
+            }
+            else
+            {
+                // Fallback por si va vacío, para dejar constancia legal de que no hubo novedades extras
+                htmlBuilder.Append(@"
                 <div style='margin-top: 35px; padding: 12px; border: 1px dashed #ccc; background-color: #fafafa; border-radius: 6px; text-align: center;'>
                     <p style='font-size: 13px; color: #777; font-style: italic; margin: 0;'>
                         No se registraron observaciones adicionales durante esta jornada de auditoría del inventario.
                     </p>
                 </div>");
-                    }
+            }
 
-                    // Continuación normal del cierre del HTML
-                    htmlBuilder.Append(@"
+            // Continuación normal del cierre del HTML
+            htmlBuilder.Append(@"
                         </body>
                         </html>");
 
-
-            // 4. Inicializar y lanzar el navegador Headless de Puppeteer Sharp
-            reportarEstado?.Invoke("⏳ Verificando componentes de renderizado... \n (Si es la primera vez, esto puede tardar unos minutos)");
-
-            // Configuramos las opciones para capturar el progreso de los Bytes
-            var opciones = new BrowserFetcherOptions
-            {
-                Browser = SupportedBrowser.Chrome,
-                CustomFileDownload = async (url, archivePath) =>
-                {
-                    using var client = new HttpClient();
-                    // Enviamos la petición leyendo los encabezados primero para saber el tamaño total del archivo
-                    using var response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-                    response.EnsureSuccessStatusCode();
-
-                    var totalBytes = response.Content.Headers.ContentLength;
-                    using var downloadStream = await response.Content.ReadAsStreamAsync();
-                    using var fileStream = File.Create(archivePath);
-
-                    var buffer = new byte[8192]; // Buffer de lectura de 8KB
-                    long totalBytesLeidos = 0;
-                    int bytesLeidos;
-
-                    while ((bytesLeidos = await downloadStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                    {
-                        await fileStream.WriteAsync(buffer, 0, bytesLeidos);
-                        totalBytesLeidos += bytesLeidos;
-
-                        if (totalBytes.HasValue)
-                        {
-                            // Cálculo matemático del porcentaje de progreso
-                            double porcentaje = (double)totalBytesLeidos / totalBytes.Value * 100;
-                            progresoDescarga?.Report(porcentaje);
-                        }
-                    }
-                }
-            };
-
-            var browserFetcher = new BrowserFetcher(opciones);
-            await browserFetcher.DownloadAsync();
-
-            using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
-            using var page = await browser.NewPageAsync();
-
-            reportarEstado?.Invoke("⏳ Generando y formateando el documento PDF...");
-        
-
-            await page.SetContentAsync(htmlBuilder.ToString());
-
-            await page.PdfAsync(rutaDestinoPdf, new PdfOptions
-            {
-                Format = PuppeteerSharp.Media.PaperFormat.Letter,
-                PrintBackground = true,
-                MarginOptions = new PuppeteerSharp.Media.MarginOptions
-                {
-                    Top = "15mm",
-                    Bottom = "15mm",
-                    Left = "15mm",
-                    Right = "15mm"
-                }
-            });
+            return htmlBuilder.ToString();
         }
     }
 }
