@@ -172,7 +172,20 @@ namespace OperacionTools.Interfaz
                 MessageBox.Show("No hay datos conciliados disponibles en la tabla para exportar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            
+
+            var modalAuditor = new IdentificacionAuditorWindow
+            {
+                //mantiene la ventana anclada al UI principal
+                Owner = Window.GetWindow(this)
+            };
+
+            if(modalAuditor.ShowDialog() != true)
+            {
+                return;
+            }
+
+            string auditorAsignado = modalAuditor.NombreCompleto;
+
             string observacionesUsuario = TxtObservaciones.Text.Trim();
 
             SaveFileDialog saveFileDialog = new SaveFileDialog
@@ -200,8 +213,12 @@ namespace OperacionTools.Interfaz
                     });
 
                     // Invocar el motor de renderizado asíncrono
-                    await _reportService.GenerarReporteAuditoriaAsync(datosReporte, saveFileDialog.FileName, 
-                        observacionesUsuario, progreso, 
+                    await _reportService.GenerarReporteAuditoriaAsync(
+                        datosReporte, 
+                        saveFileDialog.FileName, 
+                        observacionesUsuario,
+                        auditorAsignado,
+                        progreso, 
                         (mensaje) =>{
                         LblStatus.Text = mensaje;}
                     );
