@@ -25,7 +25,7 @@ namespace OperacionTools.Services
         /// <param name="datos">Lista consolidada de registros de inventario.</param>
         /// <param name="rutaDestinoPdf">Ruta absoluta donde se escribirá el PDF físico.</param>
         public async Task GenerarReporteAuditoriaAsync(List<RegistroInventario> datos, string rutaDestinoPdf, string observaciones = "",
-            IProgress<double> progresoDescarga = null, Action<string> reportarEstado = null)
+            string elaboradoPor="", IProgress<double> progresoDescarga = null, Action<string> reportarEstado = null)
         {
             // 1. Resolver el nombre dinámico de la Regional y la Bodega
             var regionales = _regionalService.ObtenerRegionales();
@@ -213,8 +213,10 @@ namespace OperacionTools.Services
                 </div>
 
                 <div class='info-bar'>
+                    <div class='info-item'><strong>Regional:</strong> {nombreRegional}</div>
                     <div class='info-item'><strong>Área / Bodega:</strong> {nombreBodega}</div>
                     <div class='info-item'><strong>Fecha de Emisión:</strong> {DateTime.Now:dd/MM/yyyy hh:mm tt}</div>
+                    <div class='info-item'><strong>Inventario elaborado por:</strong> {elaboradoPor}</div>
                 </div>
 
                 <table>
