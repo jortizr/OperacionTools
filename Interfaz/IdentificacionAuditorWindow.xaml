@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OperacionTools.Interfaz"
         mc:Ignorable="d"
-        Title="Identificación del Auditor" Height="270" Width="430"
+        Title="Identificación del Auditor" Height="330" Width="430"
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         Background="#121212" Foreground="White" WindowStyle="ThreeDBorderWindow">
     <Grid Margin="20">
         <StackPanel VerticalAlignment="Center">
-            <TextBlock Text="👤 Firma de Auditoría de Inventario" Foreground="White" FontSize="15" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="👤 Colaborador que realiza el Inventario" Foreground="White" FontSize="15" FontWeight="Bold" Margin="0,0,0,5"/>
             <TextBlock Text="Ingrese su código de nómina para firmar la validez del reporte." Foreground="Gray" FontSize="11" Margin="0,0,0,15"/>
 
             <TextBlock Text="Código de Nómina:" Foreground="LightGray" FontWeight="SemiBold" Margin="0,0,0,5"/>
