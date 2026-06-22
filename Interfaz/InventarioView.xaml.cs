@@ -137,7 +137,7 @@ namespace OperacionTools.Interfaz
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error crítico al procesar el Excel: {ex.Message}", "Error de Carga", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Error al procesar el Excel: {ex.Message} el excel no cumple con la informacion del inventario. Cargar de nuevo.", "Excel no valido.", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -156,7 +156,7 @@ namespace OperacionTools.Interfaz
             var consolidado = _inventarioService.Conciliar();
             ActualizarGrilla(consolidado);
 
-            int okCount = consolidado.Count(x => x.EstadoConciliacion == "✅OK");
+            int okCount = consolidado.Count(x => x.EstadoConciliacion == "✅ OK");
             LblStatus.Text = $"Conciliación finalizada. {okCount} registros Ok de {consolidado.Count} evaluados.";
         }
 
