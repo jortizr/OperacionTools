@@ -26,9 +26,12 @@
 		<Resource Include="resources\c39hrp24.ttf">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
-		<Resource Include="Resources\logo-envia.png">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<Resource Include="resources\logo-interfaz.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Resource>
+		<EmbeddedResource Include="Resources\logo-envia.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
     </ItemGroup>
 
   <ItemGroup>
