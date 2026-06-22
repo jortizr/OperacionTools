@@ -267,7 +267,7 @@ namespace OperacionTools.Services
                 <div class='header-container'>
                     <div class='header-text'>
                         <h1 class='title'>Inventario Malla Regional - {nombreRegional}</h1>
-                        <div class='subtitle'>Reporte de Control y Cuadrante de Mercancía</div>
+                        <div class='subtitle'>Reporte de Control y conciliacion de Mercancía</div>
                     </div>
                     <div class='logo-container'>");
 
