@@ -32,16 +32,11 @@
 
         <Border Grid.Row="2" Background="#1a1a1c" Margin="0,15,0,0" Padding="15" CornerRadius="10">
             <StackPanel Orientation="Horizontal">
-                <Button Content="📋 Pegar Portapapeles" Click="BtnPegar_Click" Padding="15,8" Background="#34495e" Foreground="White" BorderThickness="0"/>
-                <Button Content="🗑️ Limpiar" Click="BtnLimpiar_Click" Margin="10,0,0,0" Padding="15,8" Background="#c0392b" Foreground="White" BorderThickness="0"/>
+                <Button Style="{StaticResource BotonModernoStyle}" Content="📋 Pegar Portapapeles" Click="BtnPegar_Click" Padding="15,8" Background="#34495e" Foreground="White" BorderThickness="0"/>
+                <Button Style="{StaticResource BotonModernoStyle}" Content="🗑️ Limpiar" Click="BtnLimpiar_Click" Margin="10,0,0,0" Padding="15,8" Background="#c0392b" Foreground="White" BorderThickness="0"/>
 
                 <Button x:Name="BtnGenerarCode" Content="▶ Generar Cod. Barras" Click="BtnGenerarCodBar_Click" 
-                        Background="#27ae60" Foreground="White" Padding="30,10" Margin="10,0,0,0" FontWeight="Bold">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
+                        Background="#27ae60" Foreground="White" Padding="30,10" Margin="10,0,0,0" FontWeight="Bold" Style="{StaticResource BotonModernoStyle}">
                 </Button>
             </StackPanel>
         </Border>

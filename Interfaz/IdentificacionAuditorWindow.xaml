@@ -20,8 +20,8 @@
             <TextBox x:Name="TxtNombreCompleto" Height="30" VerticalContentAlignment="Center" Background="#1a1a1c" Foreground="White" BorderBrush="#333" FontSize="13" Padding="6,0"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                <Button Content="Cancelar" Width="90" Height="32" Background="#c0392b" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,0,10,0" Click="BtnCancelar_Click"/>
-                <Button Content="Aceptar" Width="90" Height="32" Background="#27ae60" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnAceptar_Click"/>
+                <Button Style="{StaticResource BotonModernoStyle}"  Content="Cancelar" Width="90" Height="32" Background="#c0392b" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,0,10,0" Click="BtnCancelar_Click"/>
+                <Button Style="{StaticResource BotonModernoStyle}"  Content="Aceptar" Width="90" Height="32" Background="#27ae60" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnAceptar_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>

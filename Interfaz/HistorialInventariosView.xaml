@@ -23,8 +23,8 @@
                 <TextBlock Text="Hasta:" Foreground="LightGray" VerticalAlignment="Center" Margin="15,0,8,0"/>
                 <DatePicker x:Name="DpHasta" Width="130" Height="28"/>
 
-                <Button Content="🔍 Filtrar Historial" Width="120" Height="28" Background="#f39c12" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="20,0,0,0" Click="BtnFiltrar_Click"/>
-                <Button Content="🔄 Limpiar" Width="90" Height="28" Background="#444" Foreground="White" BorderThickness="0" Margin="10,0,0,0" Click="BtnLimpiar_Click"/>
+                <Button Style="{StaticResource BotonModernoStyle}" Content="🔍 Filtrar Historial" Width="120" Height="28" Background="#f39c12" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="20,0,0,0" Click="BtnFiltrar_Click"/>
+                <Button Style="{StaticResource BotonModernoStyle}" Content="🔄 Limpiar" Width="90" Height="28" Background="#444" Foreground="White" BorderThickness="0" Margin="10,0,0,0" Click="BtnLimpiar_Click"/>
             </StackPanel>
         </Border>
 

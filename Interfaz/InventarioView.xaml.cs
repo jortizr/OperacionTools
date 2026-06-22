@@ -266,5 +266,22 @@ namespace OperacionTools.Interfaz
             GridInventario.ItemsSource = null;
             GridInventario.ItemsSource = datos;
         }
+
+        /// <summary>
+        /// Boton para abrir el tutorial modal específico del módulo de inventario, con pasos detallados y visuales para guiar al usuario en el proceso de escaneo, conciliación y exportación. El modal se muestra de forma no bloqueante para permitir la consulta simultánea del tutorial mientras se interactúa con la aplicación principal.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnTutorial_Click(object sender, RoutedEventArgs e)
+        {
+            // Instanciamos el tutorial pasándole la llave del módulo
+            var tutorial = new TutorialModalWindow("inventario");
+
+            // Al asignarle el 'Owner' (Dueño), se moverá en conjunto con la aplicación principal
+            tutorial.Owner = Window.GetWindow(this);
+
+            // .Show() en lugar de .ShowDialog() permite mantener la interactividad de fondo 🎯
+            tutorial.Show();
+        }
     }
 }
