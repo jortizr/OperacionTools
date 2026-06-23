@@ -76,5 +76,11 @@ namespace OperacionTools.Interfaz
             }
         }
 
+        private void BtnTutorial_Click(object sender, RoutedEventArgs e)
+        {
+            var tutorial = new TutorialModalWindow("configuracion");
+            tutorial.Owner = Window.GetWindow(this);
+            tutorial.Show();
+        }
     }
 }
