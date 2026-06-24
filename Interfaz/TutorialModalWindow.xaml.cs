@@ -45,7 +45,7 @@ namespace OperacionTools.Interfaz
                     pasos.Add(new PasoTutorial { Numero = 2, Titulo = "Paso 2: Agregar los datos de Sigma", Descripcion = "Haz clic en 'Cargar Inventario General' luego se busca el excel descargado de la plataforma Mallan en la opcion 'Informes'->'Reportes'->'Inventario general' y la bodega a la que se va a realizar el inventario. "});
                     pasos.Add(new PasoTutorial { Numero = 3, Titulo = "Paso 3: Conciliar la información", Descripcion = "Selecciona 'Conciliar Datos' para que la aplicacion cruce la informacion del excel con lo ingresado fisicamente, en la lista se vera reflejadas las inconsistencias." });
                     pasos.Add(new PasoTutorial { Numero = 4, Titulo = "Paso 4: Agregar una observación", Descripcion = "Selecciona el campo 'Observaciones' para escribir alguna nota sobre alguna inconsistencia encontrada y/o solución." });
-                    pasos.Add(new PasoTutorial { Numero = 4, Titulo = "Paso 4: Generar Reporte", Descripcion = "Seleccionar 'Guardar e Imprimir PDF', automaticamente se genera el reporte en pdf, sin embargo, se descargara los complementos solo la primera vez. Al finalizar se muestra el reporte en el navegador." });
+                    pasos.Add(new PasoTutorial { Numero = 4, Titulo = "Paso 5: Generar Reporte", Descripcion = "Seleccionar 'Guardar e Imprimir PDF', automaticamente se genera el reporte en pdf, sin embargo, se descargara los complementos solo la primera vez. Al finalizar se muestra el reporte en el navegador." });
                     break;
 
                 case "configuracion":
