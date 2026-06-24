@@ -102,5 +102,11 @@ namespace OperacionTools.Interfaz
             GridGuias.ItemsSource = null;
         }
 
+        private void BtnTutorial_Click(object sender, RoutedEventArgs e)
+        {
+            var tutorial = new TutorialModalWindow("digitador guias");
+            tutorial.Owner = Window.GetWindow(this);
+            tutorial.Show();
+        }
     }
 }
