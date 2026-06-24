@@ -46,5 +46,5 @@ La aplicación está desarrollada bajo estrictos estándares de ingeniería de s
 
 ### Clonar el repositorio
 ```bash
-git clone [https://github.com/TU_USUARIO/OperacionTools.git](https://github.com/TU_USUARIO/OperacionTools.git)
+git clone [https://github.com/jortizr/OperacionTools.git](https://github.com/jortizr/OperacionTools.git)
 cd OperacionTools
