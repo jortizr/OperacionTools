@@ -46,7 +46,7 @@
                              VerticalContentAlignment="Center"/>
             </StackPanel>
             <Button Content="💾 Guardar Configuración" Width="180" Height="35"
-                    Background="#27ae60" Foreground="White" FontWeight="Bold" 
+                    Background="#ba0020" Foreground="White" FontWeight="Bold" 
                     BorderThickness="0" Click="BtnGuardar_Click" 
                     Style="{StaticResource BotonModernoStyle}"/>
         </StackPanel>
