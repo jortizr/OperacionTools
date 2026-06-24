@@ -15,8 +15,8 @@
                 <TextBlock Text="📄 Vista Previa Digital" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" FontSize="14"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Button Style="{StaticResource BotonModernoStyle}"  Content="🖨️ Imprimir / Guardar PDF" Width="180" Height="28" Background="#27ae60" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,0,10,0" Click="BtnImprimir_Click"/>
-                    <Button Style="{StaticResource BotonModernoStyle}"  Content="Cerrar Vista" HorizontalAlignment="Right" Width="100" Height="28" Background="#333" Foreground="White" BorderThickness="0" Click="BtnCerrar_Click"/>
+                    <Button Style="{StaticResource BotonModernoStyle}"  Content="🖨️ Imprimir / Guardar PDF" Width="180" Height="28" Background="#ba0020" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,0,10,0" Click="BtnImprimir_Click"/>
+                    <Button Style="{StaticResource BotonModernoStyle}"  Content="Cerrar Vista" HorizontalAlignment="Right" Width="100" Height="28" Background="#4e4e4e" Foreground="White" BorderThickness="0" Click="BtnCerrar_Click"/>
                 </StackPanel>
                 </Grid>
         </Border>
