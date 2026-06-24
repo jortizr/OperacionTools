@@ -80,5 +80,12 @@ namespace OperacionTools.Interfaz
             GridGuiasCodBar.ItemsSource = null;
             GridGuiasCodBar.ItemsSource = ListaGuias;
         }
+
+        private void BtnTutorial_Click(object sender, RoutedEventArgs e)
+        {
+            var tutorial = new TutorialModalWindow("generador codigo barras");
+            tutorial.Owner = Window.GetWindow(this);
+            tutorial.Show();
+        }
     }
 }

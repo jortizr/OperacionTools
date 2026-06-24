@@ -10,10 +10,23 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock  Text="📜 Historial de Auditorías de Inventario" Foreground="White" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
 
-        <TextBlock Grid.Row="0" Text="📜 Historial de Auditorías de Inventario" Foreground="White" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+            <Button Style="{StaticResource BotonModernoStyle}"  Content="❓Tutorial" 
+            Margin="15,0,0,0" 
+            Padding="10,4"
+            Background="#33ffffff"
+            Foreground="#FF15F312"
+            FontWeight="SemiBold" 
+            BorderThickness="0" 
+            Cursor="Hand"
+            Click="BtnTutorial_Click">
+            </Button>
+        </StackPanel>
 
         <Border Grid.Row="1" Background="#1a1a1c" Padding="15" CornerRadius="10" Margin="0,0,0,15">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -23,8 +36,8 @@
                 <TextBlock Text="Hasta:" Foreground="LightGray" VerticalAlignment="Center" Margin="15,0,8,0"/>
                 <DatePicker x:Name="DpHasta" Width="130" Height="28"/>
 
-                <Button Style="{StaticResource BotonModernoStyle}" Content="🔍 Filtrar Historial" Width="120" Height="28" Background="#f39c12" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="20,0,0,0" Click="BtnFiltrar_Click"/>
-                <Button Style="{StaticResource BotonModernoStyle}" Content="🔄 Limpiar" Width="90" Height="28" Background="#444" Foreground="White" BorderThickness="0" Margin="10,0,0,0" Click="BtnLimpiar_Click"/>
+                <Button Style="{StaticResource BotonModernoStyle}" Content="🔍 Filtrar Historial" Width="120" Height="28" Background="#ba0020" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="20,0,0,0" Click="BtnFiltrar_Click"/>
+                <Button Style="{StaticResource BotonModernoStyle}" Content="🔄 Limpiar" Width="90" Height="28" Background="#FF04689E" Foreground="White" BorderThickness="0" Margin="10,0,0,0" Click="BtnLimpiar_Click"/>
             </StackPanel>
         </Border>
 

@@ -62,5 +62,12 @@ namespace OperacionTools.Interfaz
                 MessageBox.Show("Seleccione un registro para ver el reporte.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
+
+        private void BtnTutorial_Click(object sender, RoutedEventArgs e)
+        {
+            var tutorial = new TutorialModalWindow("historial inventario");
+            tutorial.Owner = Window.GetWindow(this);
+            tutorial.Show();
+        }
     }
 }
