@@ -26,8 +26,11 @@
 		<Resource Include="resources\c39hrp24.ttf">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+		<Resource Include="resources\logo-interfaz.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Resource>
 		<EmbeddedResource Include="Resources\logo-envia.png">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</EmbeddedResource>
     </ItemGroup>
 
@@ -39,7 +42,8 @@
     <PackageReference Include="ExcelDataReader" Version="3.8.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.8.0" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
-    <PackageReference Include="PuppeteerSharp" Version="25.0.4" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4022.49" />
+    <PackageReference Include="PuppeteerSharp" Version="25.1.2" />
   </ItemGroup>
 
   <ItemGroup>

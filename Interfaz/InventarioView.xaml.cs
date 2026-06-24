@@ -137,7 +137,7 @@ namespace OperacionTools.Interfaz
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error crítico al procesar el Excel: {ex.Message}", "Error de Carga", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Error al procesar el Excel: {ex.Message} el excel no cumple con la informacion del inventario. Cargar de nuevo.", "Excel no valido.", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -156,7 +156,7 @@ namespace OperacionTools.Interfaz
             var consolidado = _inventarioService.Conciliar();
             ActualizarGrilla(consolidado);
 
-            int okCount = consolidado.Count(x => x.EstadoConciliacion == "✅OK");
+            int okCount = consolidado.Count(x => x.EstadoConciliacion == "✅ OK");
             LblStatus.Text = $"Conciliación finalizada. {okCount} registros Ok de {consolidado.Count} evaluados.";
         }
 
@@ -172,7 +172,20 @@ namespace OperacionTools.Interfaz
                 MessageBox.Show("No hay datos conciliados disponibles en la tabla para exportar.", "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            
+
+            var modalAuditor = new IdentificacionAuditorWindow
+            {
+                //mantiene la ventana anclada al UI principal
+                Owner = Window.GetWindow(this)
+            };
+
+            if(modalAuditor.ShowDialog() != true)
+            {
+                return;
+            }
+
+            string auditorAsignado = modalAuditor.NombreCompleto;
+
             string observacionesUsuario = TxtObservaciones.Text.Trim();
 
             SaveFileDialog saveFileDialog = new SaveFileDialog
@@ -200,8 +213,12 @@ namespace OperacionTools.Interfaz
                     });
 
                     // Invocar el motor de renderizado asíncrono
-                    await _reportService.GenerarReporteAuditoriaAsync(datosReporte, saveFileDialog.FileName, 
-                        observacionesUsuario, progreso, 
+                    await _reportService.GenerarReporteAuditoriaAsync(
+                        datosReporte, 
+                        saveFileDialog.FileName, 
+                        observacionesUsuario,
+                        auditorAsignado,
+                        progreso, 
                         (mensaje) =>{
                         LblStatus.Text = mensaje;}
                     );
@@ -248,6 +265,23 @@ namespace OperacionTools.Interfaz
         {
             GridInventario.ItemsSource = null;
             GridInventario.ItemsSource = datos;
+        }
+
+        /// <summary>
+        /// Boton para abrir el tutorial modal específico del módulo de inventario, con pasos detallados y visuales para guiar al usuario en el proceso de escaneo, conciliación y exportación. El modal se muestra de forma no bloqueante para permitir la consulta simultánea del tutorial mientras se interactúa con la aplicación principal.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnTutorial_Click(object sender, RoutedEventArgs e)
+        {
+            // Instanciamos el tutorial pasándole la llave del módulo
+            var tutorial = new TutorialModalWindow("inventario");
+
+            // Al asignarle el 'Owner' (Dueño), se moverá en conjunto con la aplicación principal
+            tutorial.Owner = Window.GetWindow(this);
+
+            // .Show() en lugar de .ShowDialog() permite mantener la interactividad de fondo 🎯
+            tutorial.Show();
         }
     }
 }

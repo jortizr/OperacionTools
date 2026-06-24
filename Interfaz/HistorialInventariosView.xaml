@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="OperacionTools.Interfaz.HistorialInventariosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OperacionTools.Interfaz"
+             mc:Ignorable="d" 
+             Background="#121212" d:DesignHeight="550" d:DesignWidth="800">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock  Text="📜 Historial de Auditorías de Inventario" Foreground="White" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+
+            <Button Style="{StaticResource BotonModernoStyle}"  Content="❓Tutorial" 
+            Margin="15,0,0,0" 
+            Padding="10,4"
+            Background="#33ffffff"
+            Foreground="#FF15F312"
+            FontWeight="SemiBold" 
+            BorderThickness="0" 
+            Cursor="Hand"
+            Click="BtnTutorial_Click">
+            </Button>
+        </StackPanel>
+
+        <Border Grid.Row="1" Background="#1a1a1c" Padding="15" CornerRadius="10" Margin="0,0,0,15">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Desde:" Foreground="LightGray" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <DatePicker x:Name="DpDesde" Width="130" Height="28"/>
+
+                <TextBlock Text="Hasta:" Foreground="LightGray" VerticalAlignment="Center" Margin="15,0,8,0"/>
+                <DatePicker x:Name="DpHasta" Width="130" Height="28"/>
+
+                <Button Style="{StaticResource BotonModernoStyle}" Content="🔍 Filtrar Historial" Width="120" Height="28" Background="#ba0020" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="20,0,0,0" Click="BtnFiltrar_Click"/>
+                <Button Style="{StaticResource BotonModernoStyle}" Content="🔄 Limpiar" Width="90" Height="28" Background="#FF04689E" Foreground="White" BorderThickness="0" Margin="10,0,0,0" Click="BtnLimpiar_Click"/>
+            </StackPanel>
+        </Border>
+
+        <DataGrid x:Name="GridHistorial" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" Background="#1a1a1c" RowBackground="#1e1e20" AlternatingRowBackground="#252528" Foreground="#333" BorderBrush="#333" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#333">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Fecha de Conciliación" Binding="{Binding Fecha, StringFormat='dd/MM/yyyy hh:mm tt'}" Width="160" Foreground="White"/>
+                <DataGridTextColumn Header="Ubicación / Bodega" Binding="{Binding Bodega}" Width="150" Foreground="White"/>
+                <DataGridTextColumn Header="Registros Auditados" Binding="{Binding TotalRegistros}" Width="130" Foreground="White"/>
+                <DataGridTextColumn Header="Nombre del Archivo Físico" Binding="{Binding NombreArchivo}" Width="*" Foreground="White"/>
+                <DataGridTemplateColumn Header="Acciones" Width="120">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="👁️ Ver Reporte" Background="#27ae60" Foreground="White" FontWeight="Bold" FontSize="11" Padding="5,2" BorderThickness="0" Click="BtnVerReporte_Click" Tag="{Binding}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

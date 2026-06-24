@@ -7,17 +7,35 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600" Background="#121212">
     <Grid Margin="30">
-        <StackPanel MaxWidth="500" HorizontalAlignment="Left">
-            <TextBlock Text="⚙️ Configuración de Almacenamiento y Red" Foreground="White" FontSize="18" 
-                       FontWeight="Bold" Margin="0,0,0,20"/>
-            <CheckBox x:Name="ChkUtilizarRed" Content="Habilitar almacenamiento local remoto." Foreground="White"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,25">
+            <TextBlock Text="⚙️ Configuración de Almacenamiento y Red" Foreground="White" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+
+            <Button Style="{StaticResource BotonModernoStyle}"  Content="❓Tutorial" 
+            Margin="15,0,0,0" 
+            Padding="10,4"
+            Background="#33ffffff"
+            Foreground="#FF15F312"
+            FontWeight="SemiBold" 
+            BorderThickness="0" 
+            Cursor="Hand"
+            Click="BtnTutorial_Click">
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" MaxWidth="500" HorizontalAlignment="Left" Width="406">
+            <CheckBox x:Name="ChkUtilizarRed" Content="Habilitar almacenamiento remoto (LAN)." Foreground="White"
                       FontSize="13" Margin="0,0,0,20" IsChecked="False" Checked="ChkUtilizarRed_Changed"
                       Unchecked="ChkUtilizarRed_Changed"/>
 
             <StackPanel x:Name="PanelCredencialesRed">
                 <TextBlock Text="Ruta de Red (Carpeta Compartida UNC):" Foreground="Gray" FontWeight="DemiBold" Margin="0,0,5,5"/>
                 <TextBox x:Name="TxtRutaRed" Height="30" Margin="0,0,0,15" VerticalAlignment="Center" FontSize="13"
-                         Text="\\192.168.8.27\Compartido\InventarioData\"/>
+                         Text="\\ipservidor\Compartido\InventarioData\"/>
 
                 <TextBlock Text="Usuario de Red:" Foreground="Gray" FontWeight="DemiBold" Margin="0,0,5,5"/>
                 <TextBox x:Name="TxtUsuarioRed" Height="30" Margin="0,0,0,15" VerticalContentAlignment="Center"
@@ -28,7 +46,9 @@
                              VerticalContentAlignment="Center"/>
             </StackPanel>
             <Button Content="💾 Guardar Configuración" Width="180" Height="35"
-                    Background="#27ae60" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnGuardar_Click"/>
+                    Background="#ba0020" Foreground="White" FontWeight="Bold" 
+                    BorderThickness="0" Click="BtnGuardar_Click" 
+                    Style="{StaticResource BotonModernoStyle}"/>
         </StackPanel>
     </Grid>
 </UserControl>

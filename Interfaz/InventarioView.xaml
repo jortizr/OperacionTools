@@ -16,8 +16,20 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Módulo de Control de Inventario General" Foreground="white"
-                   FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock Text="Módulo de Control de Inventario General" Foreground="White" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+
+            <Button Style="{StaticResource BotonModernoStyle}"  Content="❓Tutorial" 
+            Margin="15,0,0,0" 
+            Padding="10,4"
+            Background="#33ffffff"
+            Foreground="#FF15F312"
+            FontWeight="SemiBold" 
+            BorderThickness="0" 
+            Cursor="Hand"
+            Click="BtnTutorial_Click">
+            </Button>
+        </StackPanel>
 
         <Border Grid.Row="1" Background="#1a1a1c" Padding="15" CornerRadius="10" Margin="0,0,0,15">
             <Grid>
@@ -46,7 +58,7 @@
                              KeyDown="TxtConsecutivo_KeyDown" MinLines="4" MaxLength="9"/>
                 </StackPanel>
 
-                <Button Grid.Column="3" Content="📂 Cargar Inventario General (excel-Sigma)" Width="260" Height="30" 
+                <Button Style="{StaticResource BotonModernoStyle}" Grid.Column="3" Content="📂 Cargar Inventario General (Excel)" Width="260" Height="30" 
                         VerticalAlignment="Bottom" Margin="10,0,5,0" Background="#2980b9" 
                         Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnCargarExcel_Click"/>
             </Grid>
@@ -106,8 +118,8 @@
                     <ProgressBar x:Name="ProgBarStatus" Height="2" Width="auto" Visibility="Collapsed" BorderBrush="#FF312F2F"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="🔄 Conciliar Datos" Padding="20,10" Background="#f39c12" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,0,10,0" Click="BtnConciliar_Click"/>
-                    <Button Content="📄 Guardar e Imprimir PDF" Padding="20,10" Background="#27ae60" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnExportarPDF_Click"/>
+                    <Button Style="{StaticResource BotonModernoStyle}" Content="🔄 Conciliar Datos" Padding="20,10" Background="#ba0020" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,0,10,0" Click="BtnConciliar_Click"/>
+                    <Button Style="{StaticResource BotonModernoStyle}" Content="📄 Guardar e Imprimir PDF" Padding="20,10" Background="#27ae60" Foreground="White" FontWeight="Bold" BorderThickness="0" Click="BtnExportarPDF_Click"/>
                 </StackPanel>
             </Grid>
         </Border>

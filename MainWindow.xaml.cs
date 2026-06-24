@@ -34,6 +34,27 @@ namespace OperacionTools
             }
         }
 
+        /// <summary>
+        /// Manejador de eventos que captura el clic en el Hyperlink y abre el navegador web predeterminado.
+        /// </summary>
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri)
+                {
+                    UseShellExecute = true // Requerido en .NET Core / .NET 5+ para lanzar URLs externas
+                });
+
+                // Marcamos el evento como manejado para que no cause excepciones internas
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"No se pudo abrir el perfil de GitHub: {ex.Message}", "Aviso del Sistema", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
            // Permite arrastrar la ventana sin bordes por toda la pantalla
@@ -65,5 +86,11 @@ namespace OperacionTools
         {
             MainContentFrame.Content = new InventarioView();
         }
+
+        private void BtnHistorialInventario_Click(object sender, RoutedEventArgs e)
+        {
+            MainContentFrame.Content = new HistorialInventariosView();
+        }
+
     }
 }

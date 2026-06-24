@@ -72,7 +72,7 @@ namespace OperacionTools.Interfaz
 
             // Pequeña notificación visual en lugar de MessageBox para no perder el foco
             BtnIniciar.Content = "PREPARANDO...";
-            await Task.Delay(4000);
+            await Task.Delay(5000);
             BtnIniciar.Content = "DIGITANDO...";
 
             foreach (var guia in items)
@@ -102,5 +102,11 @@ namespace OperacionTools.Interfaz
             GridGuias.ItemsSource = null;
         }
 
+        private void BtnTutorial_Click(object sender, RoutedEventArgs e)
+        {
+            var tutorial = new TutorialModalWindow("digitador guias");
+            tutorial.Owner = Window.GetWindow(this);
+            tutorial.Show();
+        }
     }
 }

@@ -17,7 +17,21 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock Text="Generador de Codigos de Barras" Foreground="White" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+            <Button Style="{StaticResource BotonModernoStyle}"  Content="❓Tutorial" 
+            Margin="15,0,0,0" 
+            Padding="10,4"
+            Background="#33ffffff"
+            Foreground="#FF15F312"
+            FontWeight="SemiBold" 
+            BorderThickness="0" 
+            Cursor="Hand"
+            Click="BtnTutorial_Click">
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15"/>
 
         <DataGrid x:Name="GridGuiasCodBar" Grid.Row="1" AutoGenerateColumns="False" 
                   Background="#2d2d30" Foreground="#FF2B2828" CanUserAddRows="False"
@@ -32,19 +46,13 @@
 
         <Border Grid.Row="2" Background="#1a1a1c" Margin="0,15,0,0" Padding="15" CornerRadius="10">
             <StackPanel Orientation="Horizontal">
-                <Button Content="📋 Pegar Portapapeles" Click="BtnPegar_Click" Padding="15,8" Background="#34495e" Foreground="White" BorderThickness="0"/>
-                <Button Content="🗑️ Limpiar" Click="BtnLimpiar_Click" Margin="10,0,0,0" Padding="15,8" Background="#c0392b" Foreground="White" BorderThickness="0"/>
+                <Button Style="{StaticResource BotonModernoStyle}" Content="📋 Pegar Portapapeles" Click="BtnPegar_Click" Padding="15,8" Background="#34495e" Foreground="White" BorderThickness="0"/>
+                <Button Style="{StaticResource BotonModernoStyle}" Content="🗑️ Limpiar" Click="BtnLimpiar_Click" Margin="10,0,0,0" Padding="15,8" Background="#FF04689E" Foreground="White" BorderThickness="0"/>
 
                 <Button x:Name="BtnGenerarCode" Content="▶ Generar Cod. Barras" Click="BtnGenerarCodBar_Click" 
-                        Background="#27ae60" Foreground="White" Padding="30,10" Margin="10,0,0,0" FontWeight="Bold">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
+                        Background="#ba0020" Foreground="White" Padding="30,10" Margin="10,0,0,0" FontWeight="Bold" Style="{StaticResource BotonModernoStyle}">
                 </Button>
             </StackPanel>
         </Border>
-        <Label Content="Generador de Codigos de Barras" HorizontalAlignment="Center" Foreground="white" VerticalAlignment="Center" Height="26" Width="234" FontWeight="Bold" FontSize="14"/>
     </Grid>
 </UserControl>

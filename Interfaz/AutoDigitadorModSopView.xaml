@@ -6,19 +6,36 @@
              xmlns:local="clr-namespace:OperacionTools.Interfaz"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
     <Grid Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
-            <Button Content="📋 Pegar Portapapeles" Click="BtnPegar_Click" Padding="15,8" Background="#34495e" Foreground="White" BorderThickness="0"/>
-            <Button Content="🗑️ Limpiar" Click="BtnLimpiar_Click" Margin="10,0,0,0" Padding="15,8" Background="#c0392b" Foreground="White" BorderThickness="0"/>
+            <TextBlock Text="Módulo Digitador de Guias" Foreground="White" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+            
+            <Button Style="{StaticResource BotonModernoStyle}"  Content="❓Tutorial" 
+            Margin="15,0,0,0" 
+            Padding="10,4"
+            Background="#33ffffff"
+            Foreground="#FF15F312"
+            FontWeight="SemiBold" 
+            BorderThickness="0" 
+            Cursor="Hand"
+            Click="BtnTutorial_Click">
+            </Button>
         </StackPanel>
 
-        <DataGrid x:Name="GridGuias" Grid.Row="1" AutoGenerateColumns="False" 
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
+            <Button Content="📋 Pegar Portapapeles" Click="BtnPegar_Click" Padding="15,8" Background="#34495e" Foreground="White" BorderThickness="0" Style="{StaticResource BotonModernoStyle}"/>
+            <Button Content="🗑️ Limpiar" Click="BtnLimpiar_Click" Margin="10,0,0,0" Padding="15,8" Background="#FF04689E" Foreground="White" BorderThickness="0" Style="{StaticResource BotonModernoStyle}"/>
+        </StackPanel>
+
+        <DataGrid x:Name="GridGuias" Grid.Row="2" AutoGenerateColumns="False" 
                   Background="#2d2d30" Foreground="#FF2B2828" CanUserAddRows="False"
                   RowBackground="#FFBFBFBF" AlternatingRowBackground="#FF9E9E9E" 
                   BorderThickness="1" BorderBrush="#3f3f46" GridLinesVisibility="None" FontWeight="Bold">
@@ -29,7 +46,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Border Grid.Row="2" Background="#1a1a1c" Margin="0,15,0,0" Padding="15" CornerRadius="10">
+        <Border Grid.Row="3" Background="#1a1a1c" Margin="0,15,0,0" Padding="15" CornerRadius="10">
             <StackPanel Orientation="Horizontal">
                 <StackPanel VerticalAlignment="Center" Margin="0,0,30,0">
                     <TextBlock Text="Velocidad de digitación (ms):" Foreground="White" Margin="0,0,0,5"/>
@@ -40,12 +57,7 @@
                 </StackPanel>
 
                 <Button x:Name="BtnIniciar" Content="▶ INICIAR DIGITACIÓN" Click="BtnIniciar_Click" 
-                        Background="#27ae60" Foreground="White" Padding="30,10" FontWeight="Bold">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
+                        Background="#ba0020" Foreground="White" Padding="30,10" FontWeight="Bold"  Style="{StaticResource BotonModernoStyle}">
                 </Button>
             </StackPanel>
         </Border>
