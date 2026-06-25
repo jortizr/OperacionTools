@@ -9,6 +9,8 @@
     <ApplicationIcon>OperacionesTools.ico</ApplicationIcon>
     <AssemblyVersion>1.0</AssemblyVersion>
     <FileVersion>1.0</FileVersion>
+    <Copyright>MIT</Copyright>
+    <PackageIcon>OperacionesTools.ico</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,9 +31,9 @@
 		<Resource Include="resources\logo-interfaz.png">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Resource>
-		<EmbeddedResource Include="Resources\logo-envia.png">
+		<Content Include="Resources\logo-envia.png">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
+		</Content>
     </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +61,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="OperacionesTools.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
