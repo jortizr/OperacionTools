@@ -59,6 +59,8 @@
                 <Button x:Name="BtnIniciar" Content="▶ INICIAR DIGITACIÓN" Click="BtnIniciar_Click" 
                         Background="#ba0020" Foreground="White" Padding="30,10" FontWeight="Bold"  Style="{StaticResource BotonModernoStyle}">
                 </Button>
+                <Label Content="Cantidad Guias: " FontSize="14" Foreground="White" FontWeight="Bold" Margin="15,10,0,10"/>
+                <TextBlock x:Name="TxtContador" Text="{Binding ElementName=GridGuias, Path=Items.Count}" FontSize="14" FontWeight="Bold" Foreground="White" Margin="0,15"/>
             </StackPanel>
         </Border>
     </Grid>

@@ -56,6 +56,7 @@ namespace OperacionTools.Interfaz
             }
             GridGuias.ItemsSource = null;
             GridGuias.ItemsSource = listaProcesada;
+            
         }
 
         private void BtnLimpiar_Click(object sender, RoutedEventArgs e)
