@@ -48,3 +48,9 @@ La aplicación está desarrollada bajo estrictos estándares de ingeniería de s
 ```bash
 git clone [https://github.com/jortizr/OperacionTools.git](https://github.com/jortizr/OperacionTools.git)
 cd OperacionTools
+```
+
+### Descargar ejecutable portable
+```bash
+https://drive.google.com/file/d/1ql9IcXGOFEtHtbjowuF2vF9sYHrUpdHh/view?usp=sharing
+```
