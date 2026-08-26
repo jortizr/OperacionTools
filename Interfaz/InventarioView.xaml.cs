@@ -126,21 +126,44 @@ namespace OperacionTools.Interfaz
             {
                 try
                 {
-                    int total = _inventarioService.CargarExcelSistema(openFileDialog.FileName);
+                    bool unirInformacion = false;
 
-                    LblStatus.Text = $"Archivo del sistema cargado de forma exitosa.\nSe encontraron {total} registros.";
+                    // Si ya existen registros cargados del sistema, consultar al usuario
+                    if (_inventarioService.SistemaExcel.Any())
+                    {
+                        var respuesta = MessageBox.Show(
+                            "Ya existe un reporte cargado en el sistema.\n\n" +
+                            "• Seleccione [SÍ] para UNIR la información del nuevo archivo con la existente.\n" +
+                            "• Seleccione [NO] para REEMPLAZAR la información y hacer una carga limpia.",
+                            "Confirmación de Carga",
+                            MessageBoxButton.YesNoCancel,
+                            MessageBoxImage.Question);
+
+                        if (respuesta == MessageBoxResult.Cancel)
+                        {
+                            return;
+                        }
+
+                        unirInformacion = (respuesta == MessageBoxResult.Yes);
+                    }
+
+                    int total = _inventarioService.CargarExcelSistema(openFileDialog.FileName, unirInformacion);
+
+                    LblStatus.Text = unirInformacion
+                        ? $"Archivos unificados correctamente.\nTotal registros acumulados: {total}."
+                        : $"Archivo cargado de forma limpia.\nTotal registros: {total}.";
+
                     LblStatus.Foreground = Brushes.LightGreen;
                 }
                 catch (System.IO.IOException)
                 {
-                    MessageBox.Show("El archivo de Excel está siendo utilizado por otro proceso (ej. Microsoft Excel). Ciérralo e intenta de nuevo.", "Archivo Bloqueado", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("El archivo de Excel está siendo utilizado por otro proceso. Ciérralo e intenta de nuevo.", "Archivo Bloqueado", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al procesar el Excel: {ex.Message} el excel no cumple con la informacion del inventario. Cargar de nuevo.", "Excel no valido.", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Error al procesar el Excel: {ex.Message}. Verifique la estructura e intente nuevamente.", "Excel No Válido", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-        }
 
         /// <summary>
         /// Ejecuta el cruce de datos final y refresca los indicadores visuales informando el resultado.
