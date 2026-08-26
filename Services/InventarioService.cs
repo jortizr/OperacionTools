@@ -92,14 +92,20 @@ namespace OperacionTools.Services
         }
 
         /// <summary>
-        /// Lee y parsea el archivo de Excel del sistema extrayendo las columnas requeridas para el cruce.
+        /// Carga un archivo Excel del sistema. Si <paramref name="unirInformacion"/> es true,
+        /// se anexan los nuevos datos sin duplicar registros existentes y se ajusta el nombre de la bodega.
         /// </summary>
         /// <param name="rutaArchivo">Ruta absoluta del archivo .xlsx en el disco.</param>
         /// <returns>La cantidad total de registros válidos encontrados en el archivo.</returns>
         /// <exception cref="IOException">Se genera si el archivo está abierto o bloqueado por otro proceso.</exception>
-        public int CargarExcelSistema(string rutaArchivo)
+        public int CargarExcelSistema(string rutaArchivo, bool unirInformacion)
         {
-            SistemaExcel.Clear();
+            if (!unirInformacion)
+            {
+                SistemaExcel.Clear();
+            }
+
+            var registrosNuevos = new List<RegistroInventario>();
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
             using (var stream = File.Open(rutaArchivo, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -114,22 +120,12 @@ namespace OperacionTools.Services
 
                 foreach (DataRow row in tabla.Rows)
                 {
-                    if (row["cod_regional"] == DBNull.Value) continue;
+                    if (row["cod_regional"] == DBNull.Value || row["cons_guiasu"] == DBNull.Value) continue;
 
-                    // Saltar filas vacías o corruptas obligatorias
-                    if (row["cod_regional"] == null || row["cod_regional"] == DBNull.Value ||
-                        row["cons_guiasu"] == null || row["cons_guiasu"] == DBNull.Value)
-                    {
-                        continue;
-                    }
-
-                    // Normalización de cadenas de texto (Ceros a la izquierda)
                     string reg = row["cod_regional"]?.ToString()?.Trim().PadLeft(2, '0') ?? "00";
                     string serv = row["cod_formapago"]?.ToString()?.Trim() ?? "";
                     string consecutivo = row["cons_guiasu"]?.ToString()?.Trim().PadLeft(9, '0') ?? "000000000";
                     string regionalMaestro = row["Regional"]?.ToString()?.Trim() ?? "No registrado";
-                    string unidadesGuia = row["Unidades"]?.ToString()?.Trim() ?? "";
-
 
                     int unidades = 1;
                     if (tabla.Columns.Contains("Unidades") && row["Unidades"] != DBNull.Value)
@@ -137,27 +133,49 @@ namespace OperacionTools.Services
                         int.TryParse(row["Unidades"].ToString(), out unidades);
                     }
 
-                    SistemaExcel.Add(new RegistroInventario
+                    string bodegaExcel = row["BODEGA"]?.ToString() ?? "no encontrada";
+
+                    // Evitar duplicados si se decide unir
+                    bool yaExiste = SistemaExcel.Any(x => x.Reg == reg && x.Serv == serv && x.Consecutivo == consecutivo) ||
+                                    registrosNuevos.Any(x => x.Reg == reg && x.Serv == serv && x.Consecutivo == consecutivo);
+
+                    if (!yaExiste)
                     {
-                        RegionalMaestro = regionalMaestro,
-                        Reg = reg,
-                        Serv = serv,
-                        Consecutivo = consecutivo,
-                        UnidadesEsperadas = unidades,
-                        UnidadesLeidas = 0,
-                        EstadoConciliacion = "No Registrado / Faltante",
-                        Novedad = row["Novedad"]?.ToString() ?? "",
-                        Saldo = row["Saldo"]?.ToString() ?? "0",
-                        Remitente = row["REMITENTE"]?.ToString() ?? "",
-                        Estado = row["ESTADO"]?.ToString() ?? "",
-                        Rack = row["RACK"]?.ToString() ?? "",
-                        CodEntr = row["CodEntr"]?.ToString() ?? "Sin Responsable",
-                        Bodega = row["BODEGA"]?.ToString() ?? "no encontrada"
-                        
-                    });
+                        registrosNuevos.Add(new RegistroInventario
+                        {
+                            RegionalMaestro = regionalMaestro,
+                            Reg = reg,
+                            Serv = serv,
+                            Consecutivo = consecutivo,
+                            UnidadesEsperadas = unidades,
+                            UnidadesLeidas = 0,
+                            EstadoConciliacion = "No Registrado / Faltante",
+                            Novedad = row["Novedad"]?.ToString() ?? "",
+                            Saldo = row["Saldo"]?.ToString() ?? "0",
+                            Remitente = row["REMITENTE"]?.ToString() ?? "",
+                            Estado = row["ESTADO"]?.ToString() ?? "",
+                            Rack = row["RACK"]?.ToString() ?? "",
+                            CodEntr = row["CodEntr"]?.ToString() ?? "Sin Responsable",
+                            Bodega = bodegaExcel
+                        });
+                    }
                 }
             }
 
+            if (unirInformacion && SistemaExcel.Any() && registrosNuevos.Any())
+            {
+                string bodegaOriginal = SistemaExcel.First().Bodega;
+                string bodegaNueva = registrosNuevos.First().Bodega;
+
+                // Si los nombres de bodega son distintos, redefinir a "MALLA DOCUMENTOS Y SOBRANTES"
+                if (!string.Equals(bodegaOriginal, bodegaNueva, StringComparison.OrdinalIgnoreCase))
+                {
+                    string bodegaUnificada = "MALLA DOCUMENTOS Y SOBRANTES";
+                    foreach (var item in SistemaExcel) item.Bodega = bodegaUnificada;
+                    foreach (var item in registrosNuevos) item.Bodega = bodegaUnificada;
+                }
+            }
+            SistemaExcel.AddRange(registrosNuevos);
             return SistemaExcel.Count;
         }
 
