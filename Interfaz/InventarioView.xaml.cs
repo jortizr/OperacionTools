@@ -148,6 +148,7 @@ namespace OperacionTools.Interfaz
                     }
 
                     int total = _inventarioService.CargarExcelSistema(openFileDialog.FileName, unirInformacion);
+                    ActualizarGrilla(_inventarioService.SistemaExcel);
 
                     LblStatus.Text = unirInformacion
                         ? $"Archivos unificados correctamente.\nTotal registros acumulados: {total}."
@@ -164,6 +165,7 @@ namespace OperacionTools.Interfaz
                     MessageBox.Show($"Error al procesar el Excel: {ex.Message}. Verifique la estructura e intente nuevamente.", "Excel No Válido", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
 
         /// <summary>
         /// Ejecuta el cruce de datos final y refresca los indicadores visuales informando el resultado.

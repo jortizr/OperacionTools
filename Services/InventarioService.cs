@@ -135,12 +135,23 @@ namespace OperacionTools.Services
 
                     string bodegaExcel = row["BODEGA"]?.ToString() ?? "no encontrada";
 
-                    // Evitar duplicados si se decide unir
-                    bool yaExiste = SistemaExcel.Any(x => x.Reg == reg && x.Serv == serv && x.Consecutivo == consecutivo) ||
-                                    registrosNuevos.Any(x => x.Reg == reg && x.Serv == serv && x.Consecutivo == consecutivo);
+                    // 🟢 CORRECCIÓN: Si estamos uniendo información, buscar si la guía ya existía previamente
+                    var existenteEnSistema = SistemaExcel.FirstOrDefault(x => x.Reg == reg && x.Serv == serv && x.Consecutivo == consecutivo);
+                    var existenteEnNuevos = registrosNuevos.FirstOrDefault(x => x.Reg == reg && x.Serv == serv && x.Consecutivo == consecutivo);
 
-                    if (!yaExiste)
+                    if (existenteEnSistema != null)
                     {
+                        // Acumular unidades al registro que ya estaba guardado en memoria
+                        existenteEnSistema.UnidadesEsperadas += unidades;
+                    }
+                    else if (existenteEnNuevos != null)
+                    {
+                        // Acumular unidades al nuevo lote procesado en esta misma lectura
+                        existenteEnNuevos.UnidadesEsperadas += unidades;
+                    }
+                    else
+                    {
+                        // Agregar como un registro completamente nuevo
                         registrosNuevos.Add(new RegistroInventario
                         {
                             RegionalMaestro = regionalMaestro,
